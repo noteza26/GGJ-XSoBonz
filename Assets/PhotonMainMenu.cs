@@ -17,6 +17,7 @@ namespace Balloon.Photon
 
         onCreateRoom,
         JoinedRoom,
+        SearchingRoom,
     }
     [Serializable]
     public class SceneSystem

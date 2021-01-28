@@ -70,7 +70,8 @@ namespace Balloon.Photon
 
         void InitButton()
         {
-            createRoomBut.onClick.AddListener(createRoom);
+            // createRoomBut.onClick.AddListener(createRoom);
+            //createRoomBut.onClick.AddListener(JoinRoom);
             joinRoomBut.onClick.AddListener(JoinRoom);
         }
 
@@ -93,8 +94,11 @@ namespace Balloon.Photon
 
         public void JoinRoom()
         {
+            InitGameServer();
+
             // roomState = RoomState.Connected;
             PhotonNetwork.JoinRandomRoom();
+
 
             //   changeState();
         }
@@ -108,18 +112,18 @@ namespace Balloon.Photon
         public override void OnJoinedRoom()
         {
 
+
             base.OnJoinedRoom();
 
             Debug.Log("OnJoinedRoom");
 
-            PhotonMainMenu.instance.ChangeRoomState(RoomState.JoinedRoom);
+            // PhotonMainMenu.instance.ChangeRoomState(RoomState.JoinedRoom);
 
             if (PhotonNetwork.IsMasterClient)
             {
                 Debug.Log("Master Client");
             }
 
-            InitGameServer();
 
         }
 
@@ -127,12 +131,27 @@ namespace Balloon.Photon
 
         void InitGameServer()
         {
-            PhotonNetwork.LoadLevel("GamePlay");
+
+            StartCoroutine("LoadGameScene");
             //var obj = PhotonNetwork.Instantiate("Player", new Vector3(0, 0, 0), new Quaternion());
 
 
         }
 
+        IEnumerator LoadGameScene()
+        {
+            var random = UnityEngine.Random.Range(3, 7);
+
+            PhotonMainMenu.instance.ChangeRoomState(RoomState.SearchingRoom);
+
+            yield return new WaitForSecondsRealtime(random);
+
+            PhotonNetwork.LoadLevel("GamePlay");
+
+            PhotonMainMenu.instance.ChangeRoomState(RoomState.JoinedRoom);
+
+            yield return null;
+        }
 
 
 

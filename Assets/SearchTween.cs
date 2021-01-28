@@ -20,3 +20,5 @@ public class SearchTween : MonoBehaviour
         LeanTween.scale(textTween, new Vector3(1, 1, 1), SpeedRoate).setEase(typeTweenText);
     }
 }
+
+// Update is called once per frame
