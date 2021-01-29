@@ -117,8 +117,31 @@ MonoBehaviour:
   - {fileID: 914277003843162873}
   - {fileID: -7995544014573574703}
   - {fileID: 7637191964829993539}
-  - {fileID: 67377189902192610}
---- !u!114 &67377189902192610
+  - {fileID: 5708488683390490548}
+--- !u!114 &914277003843162873
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d7593b3a9277ac4696b20006c21dde2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  skyType:
+    m_OverrideState: 1
+    m_Value: 3
+  skyAmbientMode:
+    m_OverrideState: 0
+    m_Value: 0
+  fogType:
+    m_OverrideState: 1
+    m_Value: 3
+--- !u!114 &5708488683390490548
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,21 +166,21 @@ MonoBehaviour:
     max: 1
   cascadeShadowSplitCount:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 1
     min: 1
     max: 4
   cascadeShadowSplit0:
     m_OverrideState: 1
-    m_Value: 0.05
+    m_Value: 0.29216146
   cascadeShadowSplit1:
-    m_OverrideState: 1
-    m_Value: 0.15
+    m_OverrideState: 0
+    m_Value: 0.40252268
   cascadeShadowSplit2:
-    m_OverrideState: 1
-    m_Value: 0.3
+    m_OverrideState: 0
+    m_Value: 0.6240001
   cascadeShadowBorder0:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.007125891
   cascadeShadowBorder1:
     m_OverrideState: 0
     m_Value: 0
@@ -167,29 +190,6 @@ MonoBehaviour:
   cascadeShadowBorder3:
     m_OverrideState: 0
     m_Value: 0
---- !u!114 &914277003843162873
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d7593b3a9277ac4696b20006c21dde2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  active: 1
-  m_AdvancedMode: 0
-  skyType:
-    m_OverrideState: 1
-    m_Value: 1
-  skyAmbientMode:
-    m_OverrideState: 0
-    m_Value: 0
-  fogType:
-    m_OverrideState: 1
-    m_Value: 3
 --- !u!114 &7637191964829993539
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -203,7 +203,7 @@ MonoBehaviour:
   m_Name: Fog
   m_EditorClassIdentifier: 
   active: 1
-  m_AdvancedMode: 0
+  m_AdvancedMode: 1
   enabled:
     m_OverrideState: 1
     m_Value: 1
@@ -241,10 +241,10 @@ MonoBehaviour:
     min: 0
   baseHeight:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: -15.97
   maximumHeight:
     m_OverrideState: 0
-    m_Value: 50
+    m_Value: 214.87
   albedo:
     m_OverrideState: 0
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -253,7 +253,7 @@ MonoBehaviour:
     showEyeDropper: 1
   meanFreePath:
     m_OverrideState: 1
-    m_Value: 250
+    m_Value: 1000
     min: 1
   enableVolumetricFog:
     m_OverrideState: 1
