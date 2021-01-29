@@ -30,7 +30,7 @@ namespace Balloon.Photon
         /// <summary>
         /// MonoBehaviour method called on GameObject by Unity during initialization phase.
         /// </summary>
-        void Start()
+        void Awake()
         {
             Instance = this;
 
@@ -41,7 +41,9 @@ namespace Balloon.Photon
 
                 return;
             }
-
+        }
+        public void SpawnPlayer()
+        {
             if (playerPrefab == null)
             { // #Tip Never assume public properties of Components are filled up properly, always check and inform the developer of it.
 

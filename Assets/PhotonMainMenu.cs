@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using TMPro;
 
 namespace Balloon.Photon
 {
@@ -37,6 +38,8 @@ namespace Balloon.Photon
         [Space(10)]
         [SerializeField] private List<SceneSystem> SceneList = new List<SceneSystem>();
 
+        [SerializeField] TextMeshProUGUI textOnSearch;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -53,7 +56,10 @@ namespace Balloon.Photon
         {
 
         }
-
+        public void ChangeText(string data)
+        {
+            textOnSearch.text = data;
+        }
         public void ChangeRoomState(RoomState newState)
         {
             RoomState = newState;
