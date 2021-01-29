@@ -53,11 +53,17 @@ namespace Balloon.Photon
         }
         void FullRoom()
         {
-            if (isGameStart) return;
-            if (PlayerInRoom == PhotonNetwork.CurrentRoom.MaxPlayers && PhotonNetwork.IsMasterClient)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 photonView.RPC("StartCountdown", RpcTarget.AllBufferedViaServer);
             }
+
+            if (!isGameStart)
+                // if (PlayerInRoom == PhotonNetwork.CurrentRoom.MaxPlayers && PhotonNetwork.IsMasterClient)
+                if (PlayerInRoom == 1 && PhotonNetwork.IsMasterClient)
+                {
+                    photonView.RPC("StartCountdown", RpcTarget.AllBufferedViaServer);
+                }
         }
         [PunRPC]
         void StartCountdown()
@@ -94,32 +100,7 @@ namespace Balloon.Photon
             textCount.text = "Waiting for Player " + PlayerInRoom.ToString() + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
 
             Debug.Log("Update " + PlayerInRoom);
-            /*    InRoomObjPlayer.Clear();
-                InRoomPlayer.Clear();
 
-                var findPlayer = GameObject.FindGameObjectsWithTag("PlayerController");
-
-                for (var i = 0; i < findPlayer.Length; i++)
-                {
-                    InRoomObjPlayer.Add(findPlayer[i]);
-                }
-
-                for (var i = 0; i < InRoomObjPlayer.Count; i++)
-                {
-                    var getDataFromObj = InRoomObjPlayer[i].GetComponent<PhotonPlayerManager>();
-                    var data = new PlayerData { PlayerName = getDataFromObj.GetPlayername(), PlayerObject = getDataFromObj.gameObject };
-                    if (photonView.IsMine)
-                        dataSend = photonView.name;
-
-                    InRoomPlayer.Add(data);
-                }*/
-        }
-        public void AddData(string newPlayer, GameObject playerObject)
-        {
-            //photonView.RPC("PunAddData", RpcTarget.AllBuffered, newPlayer, playerObject);
-            /*   var data = new PlayerData { PlayerName = newPlayer, PlayerObject = playerObject };
-               InRoomPlayer.Add(data);
-               Debug.Log(data.PlayerName);*/
         }
 
         public void DelData(Player otherPlayer)
@@ -152,9 +133,6 @@ namespace Balloon.Photon
             if (!PhotonNetwork.IsMasterClient) return;
 
             base.OnPlayerEnteredRoom(newPlayer);
-
-            // photonView.RPC("AddData", RpcTarget.AllBuffered, newPlayer);
-            //            Debug.Log(newPlayer.ToStringFull());
         }
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -163,7 +141,6 @@ namespace Balloon.Photon
 
             base.OnPlayerLeftRoom(otherPlayer);
 
-            // photonView.RPC("DelData", RpcTarget.AllBuffered, otherPlayer);
 
         }
     }

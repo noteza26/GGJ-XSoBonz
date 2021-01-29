@@ -62,10 +62,8 @@ namespace Balloon.Photon
 
                     var name = PhotonConnector.instance.PlayerName;
 
-                    PhotonInGameManager.instance.AddData(name, playerObj);
-
                     PhotonNetwork.NickName = name;
-
+                    playerObj.name = name;
 
                     if (PhotonConnector.instance)
                         PhotonConnector.instance.PlayerModel = playerObj;
