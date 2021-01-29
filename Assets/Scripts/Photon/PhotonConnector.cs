@@ -94,7 +94,6 @@ namespace Balloon.Photon
 
         public void JoinRoom()
         {
-            InitGameServer();
 
             // roomState = RoomState.Connected;
             PhotonNetwork.JoinRandomRoom();
@@ -124,6 +123,7 @@ namespace Balloon.Photon
                 Debug.Log("Master Client");
             }
 
+            InitGameServer();
 
         }
 
@@ -131,8 +131,9 @@ namespace Balloon.Photon
 
         void InitGameServer()
         {
+            PhotonNetwork.LoadLevel("GamePlay");
 
-            StartCoroutine("LoadGameScene");
+            //  StartCoroutine("LoadGameScene");
             //var obj = PhotonNetwork.Instantiate("Player", new Vector3(0, 0, 0), new Quaternion());
 
 
