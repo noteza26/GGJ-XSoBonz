@@ -17,9 +17,9 @@ namespace Balloon.Photon
         public int PlayerID;
         public int PlayerScore;
         public bool StopMove;
-        [SerializeField] TextMeshProUGUI textPlayerName;
-        [SerializeField] TextMeshProUGUI textTimerCount;
-        [SerializeField] GameObject CanvasObj;
+        public TextMeshProUGUI textPlayerName;
+        public TextMeshProUGUI textTimerCount;
+        public GameObject CanvasObj;
 
         // Start is called before the first frame update
 

@@ -4285,6 +4285,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isGameStart: 0
   isCountdown: 0
+  StopMovePlayer: 0
   PlayerInRoom: 0
   namePlayerList: []
   CameraOverview: {fileID: 262998173}
@@ -4322,6 +4323,7 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   ObservedComponents:
+  - {fileID: 1589966550}
   - {fileID: 1589966552}
   viewIdField: 1
   InstantiationId: 0
@@ -5373,6 +5375,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 5702351914287868118, guid: 21d8729532a8b6b40a74ba14cdcdd803,
+        type: 3}
+      propertyPath: m_Convex
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5702351914287868119, guid: 21d8729532a8b6b40a74ba14cdcdd803,
         type: 3}

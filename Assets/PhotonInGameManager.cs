@@ -58,8 +58,8 @@ namespace Balloon.Photon
             }
 
             if (!isGameStart)
-                if (PlayerInRoom == PhotonNetwork.CurrentRoom.MaxPlayers && PhotonNetwork.IsMasterClient)
-                //    if (PlayerInRoom == 1 && PhotonNetwork.IsMasterClient)
+                //if (PlayerInRoom == PhotonNetwork.CurrentRoom.MaxPlayers && PhotonNetwork.IsMasterClient)
+                if (PlayerInRoom == 1 && PhotonNetwork.IsMasterClient)
                 {
                     isCountdown = true;
                 }

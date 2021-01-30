@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;   
+using UnityEngine.AI;
 public class AIAutoMovement : MonoBehaviour
 {
     public float wanderRadius;
@@ -15,7 +15,8 @@ public class AIAutoMovement : MonoBehaviour
     void OnEnable()
     {
         agent = GetComponent<NavMeshAgent>();
-        timer = wanderTimer;
+        var ran = Random.Range(5, wanderTimer);
+        timer = ran;
     }
 
     // Update is called once per frame
