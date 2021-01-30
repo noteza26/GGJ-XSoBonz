@@ -79,6 +79,11 @@ namespace Balloon.Photon
                 textPlayerName.color = Color.red;
             }
         }
+        public void Hurt(string hurtBy)
+        {
+            GameManager.instance.BoardKilled(hurtBy, PlayerName);
+            Destroy(this.gameObject);
+        }
         public string GetPlayername()
         {
             return PlayerName;

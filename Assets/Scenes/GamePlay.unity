@@ -4287,7 +4287,8 @@ MonoBehaviour:
   isCountdown: 0
   StopMovePlayer: 0
   PlayerInRoom: 0
-  namePlayerList: []
+  namePlayerList:
+  - 1
   CameraOverview: {fileID: 262998173}
   textCount: {fileID: 1562621624}
   imageShowPlayer:
@@ -4342,6 +4343,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isStart: 0
   PlayerInRoom: 0
+  ScoreAdd: 100
+  ScoreDelete: 80
   AllPlayerData: []
   TimerInGame: 180
 --- !u!1 &1606933904

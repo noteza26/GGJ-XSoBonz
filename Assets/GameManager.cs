@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
     public bool isStart;
     public int PlayerInRoom;
 
+    public int ScoreAdd;
+    public int ScoreDelete;
+
     public List<PlayerData> AllPlayerData;
 
     public float TimerInGame;
@@ -55,6 +58,37 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
 
 
                     */
+                }
+            }
+        }
+    }
+    public void BoardKilled(string hurtby, string hurtto)
+    {
+        Debug.Log("Player " + hurtto + "has killed By" + hurtby);
+        if (hurtby == hurtto)
+        {
+            for (int i = 0; i < AllPlayerData.Count; i++)
+            {
+                if (hurtby == AllPlayerData[i].PlayerName)
+                {
+                    var playerScore = AllPlayerData[i].PlayerScore;
+                    if (playerScore > 0)
+                        playerScore -= ScoreDelete;
+
+                    Debug.Log("Delete " + ScoreDelete + " Total" + playerScore);
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < AllPlayerData.Count; i++)
+            {
+                if (hurtby == AllPlayerData[i].PlayerName)
+                {
+                    var playerScore = AllPlayerData[i].PlayerScore;
+                    playerScore += ScoreAdd;
+
+                    Debug.Log("Add " + ScoreAdd + " Total" + playerScore);
                 }
             }
         }
@@ -106,6 +140,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
             // We own this player: send the others our data
             stream.SendNext(TimerInGame);
             stream.SendNext(isStart);
+            stream.SendNext(AllPlayerData);
 
         }
         else
@@ -113,6 +148,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
             // Network player, receive data
             this.TimerInGame = (float)stream.ReceiveNext();
             this.isStart = (bool)stream.ReceiveNext();
+            this.AllPlayerData = (List<PlayerData>)stream.ReceiveNext();
         }
     }
 

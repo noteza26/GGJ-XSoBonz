@@ -51,6 +51,10 @@ public class PlayerWeapon : MonoBehaviour
                     else
                     {
                         var bullet = PhotonNetwork.Instantiate(bulletPrefab.name, bulletOut.position, bulletOut.rotation);
+
+                        bullet.GetComponent<BulletManager>().photonPlayerManager = photonPlayerManager;
+                        bullet.GetComponent<BulletManager>().Owner = pv.name;
+
                         AmmoCount--;
 
                         UpdateAmmo();

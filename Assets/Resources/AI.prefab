@@ -1385,7 +1385,7 @@ GameObject:
   - component: {fileID: -2505656732358421545}
   m_Layer: 0
   m_Name: AI
-  m_TagString: PlayerController
+  m_TagString: AI
   m_Icon: {fileID: -215833656, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

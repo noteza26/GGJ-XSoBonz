@@ -130,6 +130,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8850040a55fa84341af85b89bb9a4c12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  photonPlayerManager: {fileID: 0}
+  Owner: 
   SpeedBullet: 20
   TimeToDestroy: 20
 --- !u!54 &-3501344767847703203
