@@ -230,20 +230,20 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
     }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.IsWriting)
-        {
-            // We own this player: send the others our data
-            stream.SendNext(AllPlayerData);
-            stream.SendNext(TeamAData);
-            stream.SendNext(TeamBData);
-        }
-        else if (stream.IsReading)
-        {
-            // Network player, receive data
-            this.AllPlayerData = (List<PlayerData>)stream.ReceiveNext();
-            this.TeamAData = (TeamA)stream.ReceiveNext();
-            this.TeamBData = (TeamB)stream.ReceiveNext();
-        }
+        /*    if (stream.IsWriting)
+            {
+                // We own this player: send the others our data
+                stream.SendNext(AllPlayerData);
+                stream.SendNext(TeamAData);
+                stream.SendNext(TeamBData);
+            }
+            else if (stream.IsReading)
+            {
+                // Network player, receive data
+                this.AllPlayerData = (List<PlayerData>)stream.ReceiveNext();
+                this.TeamAData = (TeamA)stream.ReceiveNext();
+                this.TeamBData = (TeamB)stream.ReceiveNext();
+            }*/
     }
 
 }
