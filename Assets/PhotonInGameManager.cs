@@ -1,34 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 
 namespace Balloon.Photon
 {
-    [System.Serializable]
-    public struct PlayerData
-    {
-        public string PlayerName;
-        public GameObject PlayerObject;
-    }
-    public class PhotonInGameManager : MonoBehaviourPunCallbacks
+
+    public class PhotonInGameManager : MonoBehaviourPunCallbacks, IPunObservable
     {
         public static PhotonInGameManager instance;
         public bool isGameStart;
+        public bool isCountdown;
+        public bool StopMovePlayer;
         public int PlayerInRoom;
-        [SerializeField] Player[] playerList;
+        [SerializeField] List<string> namePlayerList;
         [Header("Camera Object")]
         public GameObject CameraOverview;
+
         [Header("PlayerCount Zone")]
         public TextMeshProUGUI textCount;
+        public Image[] imageShowPlayer;
+        public TextMeshProUGUI[] TextShowPlayerName
+        ;
         [Header("Name Zone")]
         public TextMeshProUGUI textName;
         [Header("Countdown Zone")]
         public TextMeshProUGUI textShowCountdown;
         public GameObject CountdownObj;
-        float CountTime = 7f;
+        [SerializeField] float CountTime = 7f;
         // Start is called before the first frame update
         private void Awake()
         {
@@ -44,7 +46,7 @@ namespace Balloon.Photon
         }
         void Update()
         {
-
+            StartCountdown();
             LoadPlayerInScene();
             FullRoom();
         }
@@ -52,63 +54,65 @@ namespace Balloon.Photon
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                photonView.RPC("StartCountdown", RpcTarget.AllBufferedViaServer);
+                //photonView.RPC("StartCountdown", RpcTarget.AllBufferedViaServer);
             }
 
             if (!isGameStart)
                 if (PlayerInRoom == PhotonNetwork.CurrentRoom.MaxPlayers && PhotonNetwork.IsMasterClient)
-                //if (PlayerInRoom == 1 && PhotonNetwork.IsMasterClient)
+                //    if (PlayerInRoom == 1 && PhotonNetwork.IsMasterClient)
                 {
-                    photonView.RPC("StartCountdown", RpcTarget.AllBufferedViaServer);
+                    isCountdown = true;
                 }
         }
-        [PunRPC]
         void StartCountdown()
         {
-            var manager = GameManager.instance;
+            if (!isCountdown) return;
+            if (isGameStart) return;
 
+            var manager = GameManager.instance;
             CountdownObj.SetActive(true);
             CountTime -= Time.deltaTime;
+            var inttime = (int)CountTime;
+            textShowCountdown.text = inttime.ToString();
 
             if (CountTime > 5f)
             {
                 PhotonNetwork.CurrentRoom.IsOpen = false;
-                textShowCountdown.text = "ARE YOU READY ?!";
             }
             else if (CountTime <= 5f)
             {
                 if ((int)CountTime == 4)
                 {
-                    textShowCountdown.text = "Loading Scene ...";
+                    //  textShowCountdown.text = "Loading Scene ...";
 
                 }
                 else if ((int)CountTime == 2)
                 {
-                    textShowCountdown.text = "Loading Player ...";
+                    // textShowCountdown.text = "Loading Player ...";
 
                     PhotonScene.Instance.SpawnPlayer();
 
                     // LoadPlayerTeam();
                 }
-                else if ((int)CountTime == 1)
+                else if ((int)CountTime <= 0)
                 {
-                    textShowCountdown.text = "Loading Team ...";
-
-                    //LoadPlayerTeam();
-                }
-                else if ((int)CountTime == 0)
-                {
-
-                    CountTime = 10;
-                    isGameStart = true;
-                    CameraOverview.SetActive(false);
-
-                    GameManager.instance.isStart = true;
-                    GameManager.instance.PlayerMove(true);
-
+                    if (PhotonNetwork.IsMasterClient && isCountdown && !isGameStart)
+                        photonView.RPC("StartGame", RpcTarget.AllBufferedViaServer);
 
                 }
             }
+        }
+        [PunRPC]
+        void StartGame()
+        {
+            CameraOverview.SetActive(false);
+
+            GameManager.instance.isStart = true;
+
+            StopMovePlayer = false;
+
+            isCountdown = false;
+            isGameStart = true;
         }
         /*   void LoadPlayerTeam()
            {
@@ -150,35 +154,34 @@ namespace Balloon.Photon
 
             PlayerInRoom = PhotonNetwork.PlayerList.Length;
 
+
             textCount.text = "Waiting for Player " + PlayerInRoom.ToString() + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
 
             var manager = GameManager.instance;
             var playerList = PhotonNetwork.PlayerList;
 
-            Debug.Log("Player IN ROOM " + PlayerInRoom);
+            namePlayerList.Clear();
 
-            /*manager.ClearListTeam();
-
-            for (int i = 0; i < PlayerInRoom; i++)
+            foreach (var item in TextShowPlayerName)
             {
-                if (GameManager.instance)
-                {
-                    if (manager.TeamAData.PlayerTeamData.Count <= manager.TeamBData.PlayerTeamData.Count)
-                    {
-                        manager.AddDataToTeam("A", playerList[i].NickName, playerList[i].UserId, null);
-                    }
-                    else
-                    {
-                        manager.AddDataToTeam("B", playerList[i].NickName, playerList[i].UserId, null);
+                item.text = "";
+            }
+            foreach (var item in imageShowPlayer)
+            {
+                item.gameObject.SetActive(false);
+            }
 
-                    }
-                    Debug.Log(playerList[i].NickName);
-                }
-                else
-                {
-                    break;
-                }
-            }*/
+            for (var i = 0; i < playerList.Length; i++)
+            {
+                imageShowPlayer[i].gameObject.SetActive(true);
+                namePlayerList.Add(PhotonNetwork.PlayerList[i].NickName);
+                TextShowPlayerName[i].text = namePlayerList[i];
+
+                Debug.Log(PhotonNetwork.PlayerList[i].NickName);
+            }
+
+
+            Debug.Log("Player in room " + PlayerInRoom);
         }
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -198,6 +201,25 @@ namespace Balloon.Photon
             base.OnPlayerLeftRoom(otherPlayer);
 
 
+        }
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                // We own this player: send the others our data
+                stream.SendNext(isGameStart);
+                stream.SendNext(isCountdown);
+                stream.SendNext(StopMovePlayer);
+
+            }
+            else
+            {
+                // Network player, receive data
+                this.isGameStart = (bool)stream.ReceiveNext();
+                this.isCountdown = (bool)stream.ReceiveNext();
+                this.StopMovePlayer = (bool)stream.ReceiveNext();
+            }
         }
     }
 }
