@@ -94,7 +94,6 @@ namespace Balloon.Photon
                 {
                     textShowCountdown.text = "Loading Team ...";
 
-                    GameManager.instance.LoadTeam();
                     //LoadPlayerTeam();
                 }
                 else if ((int)CountTime == 0)

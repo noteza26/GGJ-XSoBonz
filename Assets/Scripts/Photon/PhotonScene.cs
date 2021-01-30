@@ -80,7 +80,6 @@ namespace Balloon.Photon
                     if (playerManager && PhotonConnector.instance)
                         if (gamemanager)
                         {
-                            var team = gamemanager.LoadTeam(playerManager, name);
 
                             playerManager.SetPlayer(PhotonConnector.instance.PlayerName);
 

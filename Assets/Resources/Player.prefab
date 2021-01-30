@@ -1830,9 +1830,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03866f635fbedfd4e94992a60eea4ee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Team: 0
   PlayerName: 
   PlayerID: 0
+  PlayerScore: 0
   StopMove: 1
   textPlayerName: {fileID: 302257597}
 --- !u!114 &-1512026423616316351

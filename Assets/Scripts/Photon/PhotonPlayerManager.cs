@@ -10,19 +10,12 @@ namespace Balloon.Photon
 {
     public class PhotonPlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     {
-        public enum TeamList
-        {
-            None,
-            A,
-            B
-        }
         [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
         public static GameObject LocalPlayerInstance;
 
-        public TeamList Team;
         public string PlayerName;
         public int PlayerID;
-
+        public int PlayerScore;
         public bool StopMove;
         [SerializeField] TextMeshProUGUI textPlayerName;
 
@@ -41,9 +34,9 @@ namespace Balloon.Photon
         void Update()
         {
 
-            if (textPlayerName.text == null || textPlayerName.text == "")
+            if (textPlayerName.text != PlayerName)
             {
-                textPlayerName.text = PlayerName.ToString() + " : " + Team.ToString();
+                textPlayerName.text = PlayerName.ToString();
                 SetColorText();
             }
         }
@@ -55,27 +48,16 @@ namespace Balloon.Photon
             PlayerID = photonView.ViewID;
             PlayerName = playername;
         }
-        /*   public void LoadTeam()
-           {
-               SetTeam();
-           }*/
-
-        public void SetTeam(TeamList team)
-        {
-            //Debug.Log(GameManager.instance.SetTeam(this));
-            Team = team;
-
-            textPlayerName.text = PlayerName.ToString() + " : " + Team.ToString();
-
-            SetColorText();
-        }
         void SetColorText()
         {
-            if (Team == TeamList.A)
+            if (photonView.IsMine)
+            {
                 textPlayerName.color = Color.green;
-
-            else if (Team == TeamList.B)
+            }
+            else
+            {
                 textPlayerName.color = Color.red;
+            }
         }
         public string GetPlayername()
         {
@@ -90,14 +72,12 @@ namespace Balloon.Photon
                 // We own this player: send the others our data
                 stream.SendNext(PlayerName);
                 stream.SendNext(PlayerID);
-                stream.SendNext(Team);
             }
             else
             {
                 // Network player, receive data
                 this.PlayerName = (string)stream.ReceiveNext();
                 this.PlayerID = (int)stream.ReceiveNext();
-                this.Team = (TeamList)stream.ReceiveNext();
             }
         }
 
