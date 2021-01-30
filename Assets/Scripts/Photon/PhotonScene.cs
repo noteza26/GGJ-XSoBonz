@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Photon;
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -61,7 +62,9 @@ namespace Balloon.Photon
                     var playerObj = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
 
                     var name = PhotonConnector.instance.PlayerName;
+                    var pv = playerObj.GetComponent<PhotonView>();
 
+                    pv.name = name;
                     PhotonNetwork.NickName = name;
                     playerObj.name = name;
 
@@ -72,8 +75,18 @@ namespace Balloon.Photon
 
 
                     var playerManager = playerObj.GetComponent<PhotonPlayerManager>();
+                    var gamemanager = GameManager.instance;
+
                     if (playerManager && PhotonConnector.instance)
-                        playerManager.SetPlayerName(PhotonConnector.instance.PlayerName);
+                        if (gamemanager)
+                        {
+                            var team = gamemanager.LoadTeam(playerManager, name);
+
+                            playerManager.SetPlayer(PhotonConnector.instance.PlayerName);
+
+                        }
+                        else
+                            Debug.LogError("Can't get GameManager");
                     else
                         Debug.LogError("Cant find playerManager or PhotonConnector");
 
@@ -111,14 +124,14 @@ namespace Balloon.Photon
         /// <param name="other">Other.</param>
         public override void OnPlayerEnteredRoom(Player other)
         {
-            Debug.Log("OnPlayerEnteredRoom() " + other.NickName); // not seen if you're the player connecting
+            /*  Debug.Log("OnPlayerEnteredRoom() " + other.NickName); // not seen if you're the player connecting
 
-            if (PhotonNetwork.IsMasterClient)
-            {
-                Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
+              if (PhotonNetwork.IsMasterClient)
+              {
+                  Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
 
-                // LoadArena();
-            }
+                  // LoadArena();
+              }*/
         }
 
         /// <summary>

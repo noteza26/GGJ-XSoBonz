@@ -13,26 +13,22 @@ namespace Balloon.Photon
         public string PlayerName;
         public GameObject PlayerObject;
     }
-    public class PhotonInGameManager : MonoBehaviourPunCallbacks, IPunObservable
+    public class PhotonInGameManager : MonoBehaviourPunCallbacks
     {
         public static PhotonInGameManager instance;
         public bool isGameStart;
         public int PlayerInRoom;
-
+        [SerializeField] Player[] playerList;
         [Header("Camera Object")]
         public GameObject CameraOverview;
         [Header("PlayerCount Zone")]
         public TextMeshProUGUI textCount;
-
+        [Header("Name Zone")]
+        public TextMeshProUGUI textName;
         [Header("Countdown Zone")]
         public TextMeshProUGUI textShowCountdown;
         public GameObject CountdownObj;
-
-        public List<PlayerData> InRoomPlayer;
-
-        public List<GameObject> InRoomObjPlayer;
-
-        [SerializeField] float CountTime = 10f;
+        float CountTime = 7f;
         // Start is called before the first frame update
         private void Awake()
         {
@@ -44,6 +40,7 @@ namespace Balloon.Photon
         private void Start()
         {
             CountdownObj.SetActive(false);
+            textName.text = PhotonNetwork.LocalPlayer.NickName;
         }
         void Update()
         {
@@ -59,8 +56,8 @@ namespace Balloon.Photon
             }
 
             if (!isGameStart)
-                // if (PlayerInRoom == PhotonNetwork.CurrentRoom.MaxPlayers && PhotonNetwork.IsMasterClient)
-                if (PlayerInRoom == 1 && PhotonNetwork.IsMasterClient)
+                if (PlayerInRoom == PhotonNetwork.CurrentRoom.MaxPlayers && PhotonNetwork.IsMasterClient)
+                //if (PlayerInRoom == 1 && PhotonNetwork.IsMasterClient)
                 {
                     photonView.RPC("StartCountdown", RpcTarget.AllBufferedViaServer);
                 }
@@ -68,72 +65,130 @@ namespace Balloon.Photon
         [PunRPC]
         void StartCountdown()
         {
+            var manager = GameManager.instance;
 
             CountdownObj.SetActive(true);
             CountTime -= Time.deltaTime;
 
-            if (CountTime >= 5f)
+            if (CountTime > 5f)
             {
+                PhotonNetwork.CurrentRoom.IsOpen = false;
                 textShowCountdown.text = "ARE YOU READY ?!";
             }
-            else if (CountTime < 5f)
+            else if (CountTime <= 5f)
             {
-                textShowCountdown.text = "START IN " + (int)CountTime;
-                if ((int)CountTime == 0)
+                if ((int)CountTime == 4)
                 {
-                    CountTime = 10f;
+                    textShowCountdown.text = "Loading Scene ...";
+
+                }
+                else if ((int)CountTime == 2)
+                {
+                    textShowCountdown.text = "Loading Player ...";
+
+                    PhotonScene.Instance.SpawnPlayer();
+
+                    // LoadPlayerTeam();
+                }
+                else if ((int)CountTime == 1)
+                {
+                    textShowCountdown.text = "Loading Team ...";
+
+                    GameManager.instance.LoadTeam();
+                    //LoadPlayerTeam();
+                }
+                else if ((int)CountTime == 0)
+                {
+                    CountTime = 10;
                     isGameStart = true;
                     CameraOverview.SetActive(false);
-                    PhotonScene.Instance.SpawnPlayer();
+
+                    GameManager.instance.PlayerMove(true);
+
+
                 }
             }
         }
+        /*   void LoadPlayerTeam()
+           {
+               var manager = GameManager.instance;
+
+               var findPlayer = GameObject.FindGameObjectsWithTag("PlayerController");
+
+               if (findPlayer.Length == manager.PlayerInRoom) return;
+
+               manager.ClearListTeam();
+
+               for (int i = 0; i < findPlayer.Length; i++)
+               {
+                   var getPlayerData = findPlayer[i].GetComponent<PhotonPlayerManager>();
+                   if (manager)
+                   {
+                       if (manager.TeamAData.PlayerTeamData.Count <= manager.TeamBData.PlayerTeamData.Count)
+                       {
+                           manager.AddDataToTeam("A", getPlayerData.PlayerName, getPlayerData.PlayerID, getPlayerData.gameObject);
+                           getPlayerData.Team = PhotonPlayerManager.TeamList.A;
+                           getPlayerData.LoadTeam();
+                       }
+                       else
+                       {
+                           manager.AddDataToTeam("B", getPlayerData.PlayerName, getPlayerData.PlayerID, getPlayerData.gameObject);
+                           getPlayerData.Team = PhotonPlayerManager.TeamList.B;
+                           getPlayerData.LoadTeam();
+                       }
+                       Debug.Log(getPlayerData.PlayerName);
+                   }
+               }
+
+           }*/
+
         public void LoadPlayerInScene()
         {
 
             if (PlayerInRoom == PhotonNetwork.PlayerList.Length) return;
 
-            Debug.Log("Load");
-
             PlayerInRoom = PhotonNetwork.PlayerList.Length;
 
             textCount.text = "Waiting for Player " + PlayerInRoom.ToString() + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
 
-            Debug.Log("Update " + PlayerInRoom);
+            var manager = GameManager.instance;
+            var playerList = PhotonNetwork.PlayerList;
 
-        }
+            Debug.Log("Player IN ROOM " + PlayerInRoom);
 
-        public void DelData(Player otherPlayer)
-        {
-            for (int i = 0; i < InRoomPlayer.Count; i++)
+            /*manager.ClearListTeam();
+
+            for (int i = 0; i < PlayerInRoom; i++)
             {
-                if (InRoomPlayer[i].PlayerName == otherPlayer.NickName)
+                if (GameManager.instance)
                 {
-                    InRoomPlayer.RemoveAt(i);
-                    break;
-                }
-            }
-        }
-        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-        {
-            if (PhotonNetwork.IsMasterClient)
-                if (stream.IsWriting)
-                {
-                    // We own this player: send the others our data
-                    stream.SendNext(PlayerInRoom);
+                    if (manager.TeamAData.PlayerTeamData.Count <= manager.TeamBData.PlayerTeamData.Count)
+                    {
+                        manager.AddDataToTeam("A", playerList[i].NickName, playerList[i].UserId, null);
+                    }
+                    else
+                    {
+                        manager.AddDataToTeam("B", playerList[i].NickName, playerList[i].UserId, null);
+
+                    }
+                    Debug.Log(playerList[i].NickName);
                 }
                 else
                 {
-                    // Network player, receive data
-                    PlayerInRoom = (int)stream.ReceiveNext();
+                    break;
                 }
+            }*/
         }
+
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             if (!PhotonNetwork.IsMasterClient) return;
 
             base.OnPlayerEnteredRoom(newPlayer);
+
+
         }
+
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
@@ -145,4 +200,6 @@ namespace Balloon.Photon
         }
     }
 }
+
+
 

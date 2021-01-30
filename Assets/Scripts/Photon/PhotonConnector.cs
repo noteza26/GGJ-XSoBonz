@@ -59,6 +59,8 @@ namespace Balloon.Photon
             LobbyState.instance.LoadPlayerName(playername);
 
             PhotonMainMenu.instance.ChangeRoomState(RoomState.Lobby);
+
+
         }
         void ConnectToServer()
         {
@@ -123,6 +125,12 @@ namespace Balloon.Photon
                 Debug.Log("Master Client");
             }
 
+            PhotonNetwork.NickName = PlayerName;
+
+            PhotonNetwork.LocalPlayer.NickName = PlayerName;
+
+            
+
             InitGameServer();
 
         }
@@ -133,8 +141,8 @@ namespace Balloon.Photon
         {
             PhotonNetwork.LoadLevel("GamePlay");
 
-            //  StartCoroutine("LoadGameScene");
-            //var obj = PhotonNetwork.Instantiate("Player", new Vector3(0, 0, 0), new Quaternion());
+            Debug.Log("Load Scene Gameplay ");
+
 
 
         }

@@ -22,13 +22,13 @@ namespace Photon.Realtime
     using System.Collections.Generic;
     using ExitGames.Client.Photon;
 
-    #if SUPPORTED_UNITY
+#if SUPPORTED_UNITY
     using UnityEngine;
-    #endif
-    #if SUPPORTED_UNITY || NETFX_CORE
+#endif
+#if SUPPORTED_UNITY || NETFX_CORE
     using Hashtable = ExitGames.Client.Photon.Hashtable;
     using SupportClass = ExitGames.Client.Photon.SupportClass;
-    #endif
+#endif
 
 
     /// <summary>
@@ -37,6 +37,7 @@ namespace Photon.Realtime
     /// <remarks>
     /// Each player has a actorNumber, valid for that room. It's -1 until assigned by server (and client logic).
     /// </remarks>
+    [System.Serializable]
     public class Player
     {
         /// <summary>
@@ -291,7 +292,7 @@ namespace Photon.Realtime
         /// </summary>
         public override string ToString()
         {
-            return string.Format("#{0:00} '{1}'",this.ActorNumber, this.NickName);
+            return string.Format("#{0:00} '{1}'", this.ActorNumber, this.NickName);
         }
 
         /// <summary>

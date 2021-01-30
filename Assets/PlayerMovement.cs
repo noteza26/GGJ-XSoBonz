@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using FIMSpace.FTail;
 using Photon.Pun;
+using Balloon.Photon;
 namespace Balloon
 {
     public class PlayerMovement : MonoBehaviour
     {
+        [SerializeField] PhotonPlayerManager MyPhotonManager;
         [SerializeField] PhotonView photonView;
         [SerializeField] Transform GameCamera;
         [SerializeField] TailAnimator2 tailAnimator2;
@@ -44,6 +46,7 @@ namespace Balloon
         void FixedUpdate()
         {
             if (!photonView.IsMine) return;
+            if (MyPhotonManager.StopMove) return;
 
             CharacterRotate();
             CharacterMove();

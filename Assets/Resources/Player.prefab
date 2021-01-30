@@ -1565,6 +1565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42a4965314523d848820bb0267b59619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MyPhotonManager: {fileID: 1578001255}
   photonView: {fileID: 80907491}
   GameCamera: {fileID: 5826569611630972482}
   tailAnimator2: {fileID: 5826569610865274008}
@@ -1829,7 +1830,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03866f635fbedfd4e94992a60eea4ee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Team: 0
   PlayerName: 
+  PlayerID: 0
+  StopMove: 1
   textPlayerName: {fileID: 302257597}
 --- !u!114 &-1512026423616316351
 MonoBehaviour:
