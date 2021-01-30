@@ -11,11 +11,14 @@ namespace Balloon
     {
         public string PlayerName;
 
+        [SerializeField] int CharacterLimit;
         [SerializeField] TMP_InputField inputName;
         [SerializeField] Button submitName;
 
+
         private void Start()
         {
+            inputName.characterLimit = CharacterLimit;
             submitName.onClick.AddListener(SubmitName);
         }
 

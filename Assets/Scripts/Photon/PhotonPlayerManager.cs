@@ -17,34 +17,39 @@ namespace Balloon.Photon
         public int PlayerID;
         public int PlayerScore;
         public bool StopMove;
-        [SerializeField] TextMeshProUGUI textPlayerName;
-        [SerializeField] TextMeshProUGUI textTimerCount;
-        [SerializeField] GameObject CanvasObj;
+        public TextMeshProUGUI textPlayerName;
+        public TextMeshProUGUI textTimerCount;
+        public GameObject CanvasObj;
 
         // Start is called before the first frame update
 
         void Awake()
         {
+            CanvasObj.SetActive(false);
+
             if (photonView.IsMine)
             {
                 LocalPlayerInstance = gameObject;
             }
+
+            textPlayerName.text = "";
 
         }
 
         // Update is called once per frame
         void Update()
         {
+            CheckPlayerMove();
 
-            if (textPlayerName.text != PlayerName)
-            {
-                textPlayerName.text = PlayerName.ToString();
-                SetColorText();
-            }
             if (GameManager.instance.isStart)
                 UpdateTimer();
             else
                 CanvasObj.SetActive(false);
+        }
+        void CheckPlayerMove()
+        {
+            if (PhotonInGameManager.instance.StopMovePlayer == StopMove) return;
+            StopMove = PhotonInGameManager.instance.StopMovePlayer;
         }
         void UpdateTimer()
         {

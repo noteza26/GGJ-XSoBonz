@@ -55,6 +55,8 @@ namespace Balloon.Photon
 
         public void LoginSuccess(string playername)
         {
+
+            PhotonNetwork.NickName = playername;
             PlayerName = playername;
             LobbyState.instance.LoadPlayerName(playername);
 
@@ -129,7 +131,7 @@ namespace Balloon.Photon
 
             PhotonNetwork.LocalPlayer.NickName = PlayerName;
 
-            
+
 
             InitGameServer();
 
