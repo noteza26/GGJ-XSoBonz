@@ -18,6 +18,8 @@ namespace Balloon.Photon
         public int PlayerScore;
         public bool StopMove;
         [SerializeField] TextMeshProUGUI textPlayerName;
+        [SerializeField] TextMeshProUGUI textTimerCount;
+        [SerializeField] GameObject CanvasObj;
 
         // Start is called before the first frame update
 
@@ -39,6 +41,19 @@ namespace Balloon.Photon
                 textPlayerName.text = PlayerName.ToString();
                 SetColorText();
             }
+            if (GameManager.instance.isStart)
+                UpdateTimer();
+            else
+                CanvasObj.SetActive(false);
+        }
+        void UpdateTimer()
+        {
+            if (GameManager.instance == null) return;
+
+            CanvasObj.SetActive(true);
+
+            var time = GameManager.instance.TimerInGame;
+            textTimerCount.text = time.ToString("000");
         }
         public void SetPlayer(string playername)
         {

@@ -1,61 +1,47 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.AI;   
 public class AIAutoMovement : MonoBehaviour
 {
-    public float speed = 5;
-    public float directionChangeInterval = 1;
-    public float maxHeadingChange = 30;
+    public float wanderRadius;
+    public float wanderTimer;
 
-    CharacterController controller;
-    float heading;
-    Vector3 targetRotation;
+    private Transform target;
+    private NavMeshAgent agent;
+    private float timer;
 
-    void Awake()
+    // Use this for initialization
+    void OnEnable()
     {
-        controller = GetComponent<CharacterController>();
-
-        // Set random initial rotation
-        heading = Random.Range(0, 360);
-        transform.eulerAngles = new Vector3(0, heading, 0);
-
-        StartCoroutine(NewHeading());
+        agent = GetComponent<NavMeshAgent>();
+        timer = wanderTimer;
     }
 
+    // Update is called once per frame
     void Update()
     {
-        transform.eulerAngles = Vector3.Slerp(transform.eulerAngles, targetRotation, Time.deltaTime * directionChangeInterval);
-        var forward = transform.TransformDirection(Vector3.forward);
-        controller.SimpleMove(forward * speed);
-    }
+        timer += Time.deltaTime;
 
-    /// <summary>
-    /// Repeatedly calculates a new direction to move towards.
-    /// Use this instead of MonoBehaviour.InvokeRepeating so that the interval can be changed at runtime.
-    /// </summary>
-    IEnumerator NewHeading()
-    {
-        while (true)
+        if (timer >= wanderTimer)
         {
-            NewHeadingRoutine();
-            yield return new WaitForSeconds(directionChangeInterval);
+            Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
+            agent.SetDestination(newPos);
+            timer = 0;
         }
     }
 
-    /// <summary>
-    /// Calculates a new direction to move towards.
-    /// </summary>
-    void NewHeadingRoutine()
+    public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
     {
-        var floor = Mathf.Clamp(heading - maxHeadingChange, 0, 360);
-        var ceil = Mathf.Clamp(heading + maxHeadingChange, 0, 360);
-        heading = Random.Range(floor, ceil);
-        targetRotation = new Vector3(0, heading, 0);
+        Vector3 randDirection = Random.insideUnitSphere * dist;
+
+        randDirection += origin;
+
+        NavMeshHit navHit;
+
+        NavMesh.SamplePosition(randDirection, out navHit, dist, layermask);
+
+        return navHit.position;
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        Debug.Log(other.name);
-    }
 }

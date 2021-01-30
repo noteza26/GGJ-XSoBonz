@@ -114,12 +114,12 @@ namespace Balloon.Photon
 
         void SpawnAI()
         {
-            var spawnVal = Random.Range(2, 5);
+            var spawnVal = Random.Range(5, 10);
             for (int i = 0; i < spawnVal; i++)
             {
                 var ranSpawn = Random.Range(0, spawnPosition.Count);
                 var AIObj = PhotonNetwork.Instantiate(AIPrefab.name, spawnPosition[ranSpawn].position, Quaternion.identity, 0);
-                spawnPosition.RemoveAt(ranSpawn);
+                //   spawnPosition.RemoveAt(ranSpawn);
 
             }
 

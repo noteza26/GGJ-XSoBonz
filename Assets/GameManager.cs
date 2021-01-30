@@ -17,25 +17,48 @@ public struct PlayerData
 [System.Serializable]
 
 
-public class GameManager : MonoBehaviourPunCallbacks
+public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
 {
     public static GameManager instance;
+    public bool isStart;
     public int PlayerInRoom;
 
     public List<PlayerData> AllPlayerData;
 
-
+    public float TimerInGame;
     private void Awake()
     {
         instance = this;
+
     }
 
     // Update is called once per frame
     void Update()
     {
         SetPlayerObj();
+        CountdownTimer();
     }
+    void CountdownTimer()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            if (isStart)
+            {
+                TimerInGame -= Time.deltaTime;
+                if (TimerInGame <= 0)
+                {
+                    TimerInGame = 0;
+                    isStart = false;
+                    /*
 
+                        Create Scoreboard Scene to show score
+
+
+                    */
+                }
+            }
+        }
+    }
     public void SetPlayerObj()
     {
         var findPlayerInRoom = GameObject.FindGameObjectsWithTag("PlayerController");
@@ -75,6 +98,22 @@ public class GameManager : MonoBehaviourPunCallbacks
         base.OnPlayerEnteredRoom(newPlayer);
 
 
+    }
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // We own this player: send the others our data
+            stream.SendNext(TimerInGame);
+            stream.SendNext(isStart);
+
+        }
+        else
+        {
+            // Network player, receive data
+            this.TimerInGame = (float)stream.ReceiveNext();
+            this.isStart = (bool)stream.ReceiveNext();
+        }
     }
 
 

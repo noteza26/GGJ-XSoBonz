@@ -98,10 +98,12 @@ namespace Balloon.Photon
                 }
                 else if ((int)CountTime == 0)
                 {
+
                     CountTime = 10;
                     isGameStart = true;
                     CameraOverview.SetActive(false);
 
+                    GameManager.instance.isStart = true;
                     GameManager.instance.PlayerMove(true);
 
 
