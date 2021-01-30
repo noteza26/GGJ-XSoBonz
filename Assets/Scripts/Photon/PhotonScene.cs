@@ -21,8 +21,13 @@ namespace Balloon.Photon
         private GameObject instance;
 
         [Tooltip("The prefab to use for representing the player")]
-        [SerializeField]
-        private GameObject playerPrefab;
+        [SerializeField] private GameObject playerPrefab;
+
+        [Header("AI Zone")]
+        [SerializeField] GameObject AIPrefab;
+        [SerializeField] List<Transform> AIspawnPosition;
+
+        [SerializeField] List<Transform> spawnPosition;
 
         #endregion
 
@@ -33,6 +38,8 @@ namespace Balloon.Photon
         /// </summary>
         void Awake()
         {
+            AIspawnPosition = spawnPosition;
+
             Instance = this;
 
             // in case we started this demo with the wrong scene being active, simply load the menu scene
@@ -57,9 +64,11 @@ namespace Balloon.Photon
                 if (PhotonPlayerManager.LocalPlayerInstance == null)
                 {
                     Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
-
+                    var randomPosi = Random.Range(0, spawnPosition.Count);
                     // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-                    var playerObj = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
+                    var playerObj = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPosition[randomPosi].position, Quaternion.identity, 0);
+
+                    spawnPosition.RemoveAt(randomPosi);
 
                     var name = PhotonConnector.instance.PlayerName;
                     var pv = playerObj.GetComponent<PhotonView>();
@@ -89,6 +98,8 @@ namespace Balloon.Photon
                     else
                         Debug.LogError("Cant find playerManager or PhotonConnector");
 
+
+                    SpawnAI();
                 }
                 else
                 {
@@ -101,6 +112,18 @@ namespace Balloon.Photon
 
         }
 
+        void SpawnAI()
+        {
+            var spawnVal = Random.Range(2, 5);
+            for (int i = 0; i < spawnVal; i++)
+            {
+                var ranSpawn = Random.Range(0, spawnPosition.Count);
+                var AIObj = PhotonNetwork.Instantiate(AIPrefab.name, spawnPosition[ranSpawn].position, Quaternion.identity, 0);
+                spawnPosition.RemoveAt(ranSpawn);
+
+            }
+
+        }
         /// <summary>
         /// MonoBehaviour method called on GameObject by Unity on every frame.
         /// </summary>
