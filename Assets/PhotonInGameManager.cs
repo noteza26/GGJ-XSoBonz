@@ -72,6 +72,7 @@ namespace Balloon.Photon
         }
         void CancelWaitingRoom()
         {
+            AudioManager.instance.CancleSound();
             PhotonNetwork.LeaveRoom();
         }
         public override void OnLeftRoom()

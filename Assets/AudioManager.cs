@@ -23,6 +23,7 @@ public class AudioManager : MonoBehaviour
     [Header("Shoot")]
     public AudioClip Shooting;
     public AudioClip JumpingSound;
+    public AudioClip Cancel;
 
     public AudioClip ClickTime;
     // Start is called before the first frame update
@@ -72,6 +73,11 @@ public class AudioManager : MonoBehaviour
         audioNewSoure.PlayOneShot(JumpingSound);
 
         Destroy(audioNew, JumpingSound.length);
+    }
+    public void CancleSound()
+    {
+        audioSource.PlayOneShot(Cancel);
+
     }
     public bool CheckMute()
     {
