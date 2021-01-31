@@ -51,6 +51,8 @@ public class BulletManager : MonoBehaviourPunCallbacks, IPunObservable
 
             Debug.Log("Killed self");
         }
+        if (other.tag == "PlayerController" && other.GetComponent<PhotonPlayerManager>().PlayerName == Owner) return;
+
         Destroy(this.gameObject);
         // Debug.Log(triggerTag);
 

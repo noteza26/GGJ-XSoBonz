@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
                 if (TimerInGame <= 0)
                 {
                     TimerInGame = 0;
+                    PhotonInGameManager.instance.GameOver();
                     isStart = false;
                     /*
 

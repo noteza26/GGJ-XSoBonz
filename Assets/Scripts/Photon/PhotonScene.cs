@@ -101,8 +101,11 @@ namespace Balloon.Photon
                         Debug.LogError("Cant find playerManager or PhotonConnector");
 
                     if (respawn)
-
                         GameManager.instance.UpdatePlayerRespawn(name, playerObj);
+
+                    Cursor.visible = false;
+                    Cursor.lockState = CursorLockMode.Locked;
+
 
                     if (PhotonNetwork.IsMasterClient)
                         SpawnAI();

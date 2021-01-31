@@ -15,6 +15,7 @@ public class AudioManager : MonoBehaviour
 
     public AudioClip WhenPlayerJoin;
     public AudioClip WhenPlayerLeft;
+    public AudioClip ClickTime;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,5 +35,10 @@ public class AudioManager : MonoBehaviour
     public void SoundWhenPlayerLeft()
     {
         audioSource.PlayOneShot(WhenPlayerLeft);
+    }
+    public void SoundClickTime()
+    {
+        audioSource.PlayOneShot(ClickTime);
+
     }
 }

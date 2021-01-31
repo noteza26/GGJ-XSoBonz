@@ -20,8 +20,11 @@ namespace Balloon.Photon
         [SerializeField] List<string> namePlayerList;
         [Header("Camera Object")]
         public Button CancelButton;
+        public Button CancelButton2;
         public GameObject CameraOverview;
         public GameObject WaitingObj;
+        public GameObject GameOverObj;
+        public HightScoreManager hightScoreManager;
         [Header("Respawn Zone")]
         public float WaitForRespawn;
         public GameObject RespawnObj;
@@ -48,6 +51,7 @@ namespace Balloon.Photon
         }
         private void Start()
         {
+            CancelButton2.onClick.AddListener(CancelWaitingRoom);
             CancelButton.onClick.AddListener(CancelWaitingRoom);
             CameraOverview.SetActive(true);
             WaitingObj.SetActive(true);
@@ -71,6 +75,17 @@ namespace Balloon.Photon
         {
             SceneManager.LoadScene("Lobby");
         }
+        public void GameOver()
+        {
+            StopMovePlayer = true;
+
+            CameraOverview.SetActive(true);
+            WaitingObj.SetActive(false);
+            RespawnObj.SetActive(false);
+            GameOverObj.SetActive(true);
+
+            hightScoreManager.LoadData();
+        }
         void FullRoom()
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -78,8 +93,8 @@ namespace Balloon.Photon
                 //photonView.RPC("StartCountdown", RpcTarget.AllBufferedViaServer);
             }
             if (!isGameStart)
-                if (PlayerInRoom == PhotonNetwork.CurrentRoom.MaxPlayers && PhotonNetwork.IsMasterClient)
-                // if (PlayerInRoom == 1 && PhotonNetwork.IsMasterClient)
+                //if (PlayerInRoom == PhotonNetwork.CurrentRoom.MaxPlayers && PhotonNetwork.IsMasterClient)
+                if (PlayerInRoom == 1 && PhotonNetwork.IsMasterClient)
                 {
                     isCountdown = true;
                 }
@@ -94,34 +109,20 @@ namespace Balloon.Photon
             CountTime -= Time.deltaTime;
             var inttime = (int)CountTime;
             textShowCountdown.text = inttime.ToString();
+            PhotonNetwork.CurrentRoom.IsOpen = false;
 
-            if (CountTime > 5f)
+            if (inttime == 2)
             {
-                PhotonNetwork.CurrentRoom.IsOpen = false;
+                PhotonScene.Instance.SpawnPlayer();
             }
-            else if (CountTime <= 5f)
+            else if ((int)CountTime <= 0)
             {
-                if ((int)CountTime == 4)
-                {
-                    //  textShowCountdown.text = "Loading Scene ...";
+                if (PhotonNetwork.IsMasterClient && isCountdown && !isGameStart)
+                    photonView.RPC("StartGame", RpcTarget.AllBufferedViaServer);
 
-                }
-                else if ((int)CountTime == 2)
-                {
-                    // textShowCountdown.text = "Loading Player ...";
-
-                    PhotonScene.Instance.SpawnPlayer();
-
-                    // LoadPlayerTeam();
-                }
-                else if ((int)CountTime <= 0)
-                {
-                    if (PhotonNetwork.IsMasterClient && isCountdown && !isGameStart)
-                        photonView.RPC("StartGame", RpcTarget.AllBufferedViaServer);
-
-                }
             }
         }
+
         [PunRPC]
         void StartGame()
         {
@@ -209,18 +210,30 @@ namespace Balloon.Photon
         }
         IEnumerator Spawning()
         {
+            CountdownObj.SetActive(false);
             RespawnObj.SetActive(true);
             WaitingObj.SetActive(false);
+            GameOverObj.SetActive(false);
             CameraOverview.SetActive(true);
+
+            AudioManager.instance.SoundClickTime();
 
             TextRespawn.text = "5";
             yield return new WaitForSecondsRealtime(1);
+            AudioManager.instance.SoundClickTime();
+
             TextRespawn.text = "4";
             yield return new WaitForSecondsRealtime(1);
+            AudioManager.instance.SoundClickTime();
+
             TextRespawn.text = "3";
             yield return new WaitForSecondsRealtime(1);
+            AudioManager.instance.SoundClickTime();
+
             TextRespawn.text = "2";
             yield return new WaitForSecondsRealtime(1);
+            AudioManager.instance.SoundClickTime();
+
             TextRespawn.text = "1";
             yield return new WaitForSecondsRealtime(1);
             TextRespawn.text = "";
@@ -229,6 +242,7 @@ namespace Balloon.Photon
             CameraOverview.SetActive(false);
             WaitingObj.SetActive(false);
             RespawnObj.SetActive(false);
+            CountdownObj.SetActive(false);
 
         }
         public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -270,6 +284,8 @@ namespace Balloon.Photon
         }
     }
 }
+
+
 
 
 

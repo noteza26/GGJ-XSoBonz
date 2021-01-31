@@ -84,6 +84,9 @@ namespace Balloon.Photon
             Debug.Log("Hurt " + hurtBy);
             GameManager.instance.BoardKilled(hurtBy, PlayerName);
 
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+
             if (photonView.IsMine)
                 PhotonInGameManager.instance.Respawn();
 
