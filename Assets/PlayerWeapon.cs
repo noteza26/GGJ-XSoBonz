@@ -52,7 +52,7 @@ public class PlayerWeapon : MonoBehaviour
                     {
                         var bullet = PhotonNetwork.Instantiate(bulletPrefab.name, bulletOut.position, bulletOut.rotation);
 
-                        bullet.GetComponent<BulletManager>().photonPlayerManager = photonPlayerManager;
+                        //  bullet.GetComponent<BulletManager>().photonPlayerManager = photonPlayerManager;
                         bullet.GetComponent<BulletManager>().Owner = pv.name;
 
                         AmmoCount--;
@@ -73,6 +73,8 @@ public class PlayerWeapon : MonoBehaviour
     }
     IEnumerator ReloadAmmo()
     {
+        AmmoCount = 0;
+        UpdateAmmo();
         yield return new WaitForSecondsRealtime(ReloadTimer);
         AmmoCount = MaxAmmo;
         onReload = false;

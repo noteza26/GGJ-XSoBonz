@@ -81,7 +81,12 @@ namespace Balloon.Photon
         }
         public void Hurt(string hurtBy)
         {
+            Debug.Log("Hurt " + hurtBy);
             GameManager.instance.BoardKilled(hurtBy, PlayerName);
+
+            if (photonView.IsMine)
+                PhotonInGameManager.instance.Respawn();
+
             Destroy(this.gameObject);
         }
         public string GetPlayername()

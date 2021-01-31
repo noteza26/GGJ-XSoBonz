@@ -50,7 +50,7 @@ namespace Balloon.Photon
                 return;
             }
         }
-        public void SpawnPlayer()
+        public void SpawnPlayer(bool respawn)
         {
             if (playerPrefab == null)
             { // #Tip Never assume public properties of Components are filled up properly, always check and inform the developer of it.
@@ -64,7 +64,9 @@ namespace Balloon.Photon
                 if (PhotonPlayerManager.LocalPlayerInstance == null)
                 {
                     Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
-                    var randomPosi = Random.Range(0, spawnPosition.Count);
+                    //var randomPosi = Random.Range(0, spawnPosition.Count);
+                    var randomPosi = Random.Range(0, 0);
+
                     // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
                     var playerObj = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPosition[randomPosi].position, Quaternion.identity, 0);
 
@@ -98,8 +100,13 @@ namespace Balloon.Photon
                     else
                         Debug.LogError("Cant find playerManager or PhotonConnector");
 
+                    if (respawn)
 
-                    SpawnAI();
+                        GameManager.instance.UpdatePlayerRespawn(name, playerObj);
+
+                    if (PhotonNetwork.IsMasterClient)
+                        SpawnAI();
+
                 }
                 else
                 {
@@ -111,6 +118,71 @@ namespace Balloon.Photon
             }
 
         }
+
+        public void SpawnPlayer()
+        {
+            if (playerPrefab == null)
+            { // #Tip Never assume public properties of Components are filled up properly, always check and inform the developer of it.
+
+                Debug.LogError("<Color=Red><b>Missing</b></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
+            }
+            else
+            {
+
+
+                if (PhotonPlayerManager.LocalPlayerInstance == null)
+                {
+                    Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
+                    //var randomPosi = Random.Range(0, spawnPosition.Count);
+                    var randomPosi = Random.Range(0, 0);
+
+                    // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
+                    var playerObj = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPosition[randomPosi].position, Quaternion.identity, 0);
+
+                    spawnPosition.RemoveAt(randomPosi);
+
+                    var name = PhotonConnector.instance.PlayerName;
+                    var pv = playerObj.GetComponent<PhotonView>();
+
+                    pv.name = name;
+                    PhotonNetwork.NickName = name;
+                    playerObj.name = name;
+
+                    if (PhotonConnector.instance)
+                        PhotonConnector.instance.PlayerModel = playerObj;
+                    else
+                        Debug.LogError("Photonconnector LOST");
+
+
+                    var playerManager = playerObj.GetComponent<PhotonPlayerManager>();
+                    var gamemanager = GameManager.instance;
+
+                    if (playerManager && PhotonConnector.instance)
+                        if (gamemanager)
+                        {
+
+                            playerManager.SetPlayer(PhotonConnector.instance.PlayerName);
+
+                        }
+                        else
+                            Debug.LogError("Can't get GameManager");
+                    else
+                        Debug.LogError("Cant find playerManager or PhotonConnector");
+
+                    if (PhotonNetwork.IsMasterClient)
+                        SpawnAI();
+                }
+                else
+                {
+
+                    Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
+                }
+
+
+            }
+
+        }
+
 
         void SpawnAI()
         {

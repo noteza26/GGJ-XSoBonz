@@ -19,6 +19,11 @@ namespace Balloon.Photon
         [SerializeField] List<string> namePlayerList;
         [Header("Camera Object")]
         public GameObject CameraOverview;
+        public GameObject WaitingObj;
+        [Header("Respawn Zone")]
+        public float WaitForRespawn;
+        public GameObject RespawnObj;
+        public TextMeshProUGUI TextRespawn;
 
         [Header("PlayerCount Zone")]
         public TextMeshProUGUI textCount;
@@ -41,6 +46,9 @@ namespace Balloon.Photon
         }
         private void Start()
         {
+            CameraOverview.SetActive(true);
+            WaitingObj.SetActive(true);
+            RespawnObj.SetActive(false);
             CountdownObj.SetActive(false);
             textName.text = PhotonNetwork.LocalPlayer.NickName;
         }
@@ -58,8 +66,8 @@ namespace Balloon.Photon
             }
 
             if (!isGameStart)
-                //if (PlayerInRoom == PhotonNetwork.CurrentRoom.MaxPlayers && PhotonNetwork.IsMasterClient)
-                if (PlayerInRoom == 1 && PhotonNetwork.IsMasterClient)
+                if (PlayerInRoom == PhotonNetwork.CurrentRoom.MaxPlayers && PhotonNetwork.IsMasterClient)
+                // if (PlayerInRoom == 1 && PhotonNetwork.IsMasterClient)
                 {
                     isCountdown = true;
                 }
@@ -183,7 +191,33 @@ namespace Balloon.Photon
 
             Debug.Log("Player in room " + PlayerInRoom);
         }
+        public void Respawn()
+        {
 
+            StartCoroutine("Spawning");
+        }
+        IEnumerator Spawning()
+        {
+            RespawnObj.SetActive(true);
+            WaitingObj.SetActive(false);
+            CameraOverview.SetActive(true);
+            yield return new WaitForSecondsRealtime(1);
+            TextRespawn.text = "5";
+            yield return new WaitForSecondsRealtime(1);
+            TextRespawn.text = "4";
+            yield return new WaitForSecondsRealtime(1);
+            TextRespawn.text = "3";
+            yield return new WaitForSecondsRealtime(1);
+            TextRespawn.text = "2";
+            yield return new WaitForSecondsRealtime(1);
+            TextRespawn.text = "1";
+
+            PhotonScene.Instance.SpawnPlayer(true);
+            CameraOverview.SetActive(false);
+            WaitingObj.SetActive(false);
+            RespawnObj.SetActive(false);
+
+        }
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             if (!PhotonNetwork.IsMasterClient) return;

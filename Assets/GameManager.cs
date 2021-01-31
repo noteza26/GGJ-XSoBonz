@@ -7,7 +7,7 @@ using TMPro;
 using Balloon.Photon;
 
 [System.Serializable]
-public struct PlayerData
+public class PlayerData
 {
     public string PlayerName;
     public int PlayerID;
@@ -26,7 +26,8 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
     public int ScoreAdd;
     public int ScoreDelete;
 
-    public List<PlayerData> AllPlayerData;
+
+    public List<PlayerData> AllPlayerData = new List<PlayerData>();
 
     public float TimerInGame;
     private void Awake()
@@ -62,57 +63,98 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
     }
+
     public void BoardKilled(string hurtby, string hurtto)
     {
-        Debug.Log("Player " + hurtto + "has killed By" + hurtby);
+
+        Debug.Log("Player " + hurtto + " has killed By " + hurtby);
         if (hurtby == hurtto)
         {
+            Debug.Log("SameName");
             for (int i = 0; i < AllPlayerData.Count; i++)
             {
                 if (hurtby == AllPlayerData[i].PlayerName)
                 {
                     var playerScore = AllPlayerData[i].PlayerScore;
                     if (playerScore > 0)
+                    {
                         playerScore -= ScoreDelete;
+                        Debug.Log("Delete " + ScoreDelete + " Total" + playerScore + " Name " + AllPlayerData[i].PlayerName);
+                    }
+                    //photonView.RPC("DeleteScore", RpcTarget.AllBufferedViaServer, AllPlayerData[i]);
 
-                    Debug.Log("Delete " + ScoreDelete + " Total" + playerScore);
                 }
             }
         }
         else
         {
+            Debug.Log("Not Same");
             for (int i = 0; i < AllPlayerData.Count; i++)
             {
                 if (hurtby == AllPlayerData[i].PlayerName)
                 {
-                    var playerScore = AllPlayerData[i].PlayerScore;
-                    playerScore += ScoreAdd;
+                    //photonView.RPC("AddScore", RpcTarget.All, i);
+                    AllPlayerData[i].PlayerScore += ScoreAdd;
+                    Debug.Log("Add " + ScoreAdd + " Total" + AllPlayerData[i].PlayerScore + " Name " + AllPlayerData[i].PlayerName);
 
-                    Debug.Log("Add " + ScoreAdd + " Total" + playerScore);
                 }
             }
         }
     }
+    [PunRPC]
+    void AddScore(int i)
+    {
+        var playerScore = AllPlayerData[i].PlayerScore;
+        playerScore += ScoreAdd;
+        Debug.Log("Add " + ScoreAdd + " Total" + playerScore + " Name " + AllPlayerData[i].PlayerName);
+
+    }
+    [PunRPC]
+    void DeleteScore(int i)
+    {
+        var playerScore = AllPlayerData[i].PlayerScore;
+        playerScore -= ScoreAdd;
+        Debug.Log("Delete " + ScoreDelete + " Total" + playerScore + " Name " + AllPlayerData[i].PlayerName);
+    }
+    public void UpdatePlayerRespawn(string name, GameObject playerObj)
+    {
+        foreach (var item in AllPlayerData)
+        {
+            if (item.PlayerName == name)
+                item.PlayerObject = playerObj;
+        }
+    }
     public void SetPlayerObj()
     {
+        if (PhotonInGameManager.instance.isGameStart) return;
+
         var findPlayerInRoom = GameObject.FindGameObjectsWithTag("PlayerController");
+        Debug.Log(findPlayerInRoom.Length);
+
         if (findPlayerInRoom.Length == 0) return;
-        if (PlayerInRoom == PhotonNetwork.CurrentRoom.PlayerCount) return;
+
+        if (PlayerInRoom == findPlayerInRoom.Length) return;
+
+        AllPlayerData.Clear();
 
         for (int i = 0; i < findPlayerInRoom.Length; i++)
         {
             var getPlayerData = findPlayerInRoom[i].GetComponent<PhotonPlayerManager>();
             if (getPlayerData)
             {
+
                 AllPlayerData.Add(new PlayerData
                 {
                     PlayerID = getPlayerData.PlayerID,
                     PlayerName = getPlayerData.PlayerName,
+                    PlayerScore = 0,
                     PlayerObject = findPlayerInRoom[i]
                 });
-                PlayerInRoom++;
+
+                Debug.Log("Add playerData " + getPlayerData.PlayerName);
             }
         }
+        PlayerInRoom = findPlayerInRoom.Length;
     }
     public void PlayerMove(bool canMove)
     {
@@ -140,7 +182,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
             // We own this player: send the others our data
             stream.SendNext(TimerInGame);
             stream.SendNext(isStart);
-            stream.SendNext(AllPlayerData);
+            //    stream.SendNext(AllPlayerData);
 
         }
         else
@@ -148,7 +190,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
             // Network player, receive data
             this.TimerInGame = (float)stream.ReceiveNext();
             this.isStart = (bool)stream.ReceiveNext();
-            this.AllPlayerData = (List<PlayerData>)stream.ReceiveNext();
+            //   this.AllPlayerData = (List<PlayerData>)stream.ReceiveNext();
         }
     }
 
