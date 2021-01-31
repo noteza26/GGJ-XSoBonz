@@ -64,13 +64,10 @@ namespace Balloon.Photon
                 if (PhotonPlayerManager.LocalPlayerInstance == null)
                 {
                     Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
-                    //var randomPosi = Random.Range(0, spawnPosition.Count);
                     var randomPosi = Random.Range(0, spawnPosition.Count);
 
                     // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
                     var playerObj = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPosition[randomPosi].position, Quaternion.identity, 0);
-
-                    spawnPosition.RemoveAt(randomPosi);
 
                     var name = PhotonConnector.instance.PlayerName;
                     var pv = playerObj.GetComponent<PhotonView>();
@@ -136,8 +133,8 @@ namespace Balloon.Photon
                 if (PhotonPlayerManager.LocalPlayerInstance == null)
                 {
                     Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
-                    //var randomPosi = Random.Range(0, spawnPosition.Count);
-                    var randomPosi = Random.Range(0, 0);
+                    var randomPosi = Random.Range(0, spawnPosition.Count);
+                    //var randomPosi = Random.Range(0, 0);
 
                     // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
                     var playerObj = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPosition[randomPosi].position, Quaternion.identity, 0);

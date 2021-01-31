@@ -134,7 +134,6 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
         if (PhotonInGameManager.instance.isGameStart) return;
 
         var findPlayerInRoom = GameObject.FindGameObjectsWithTag("PlayerController");
-        Debug.Log(findPlayerInRoom.Length);
 
         if (findPlayerInRoom.Length == 0) return;
 
@@ -156,7 +155,6 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
                     PlayerObject = findPlayerInRoom[i]
                 });
 
-                Debug.Log("Add playerData " + getPlayerData.PlayerName);
             }
         }
         PlayerInRoom = findPlayerInRoom.Length;
