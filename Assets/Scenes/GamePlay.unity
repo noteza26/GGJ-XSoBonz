@@ -1027,6 +1027,8 @@ GameObject:
   - component: {fileID: 262998177}
   - component: {fileID: 262998176}
   - component: {fileID: 262998178}
+  - component: {fileID: 262998175}
+  - component: {fileID: 262998174}
   m_Layer: 0
   m_Name: OverviewCamera
   m_TagString: Untagged
@@ -1034,6 +1036,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &262998174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 262998173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b86a6a092ca8f447a8bd544fb2c0cad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AudioListener: {fileID: 0}
+--- !u!81 &262998175
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 262998173}
+  m_Enabled: 1
 --- !u!20 &262998176
 Camera:
   m_ObjectHideFlags: 0
@@ -4427,6 +4450,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d49c698bfb1979743bd9a31737871cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMute: 0
+  MutedButton: []
   prefSound: {fileID: 2590238481903519153, guid: a55b32206349a6440bf1047ad233f223,
     type: 3}
   audioSource: {fileID: 1235069702}

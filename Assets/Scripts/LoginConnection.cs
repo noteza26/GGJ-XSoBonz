@@ -12,6 +12,7 @@ namespace Balloon
         public string PlayerName;
 
         [SerializeField] int CharacterLimit;
+        [SerializeField] TextMeshProUGUI errorText;
         [SerializeField] TMP_InputField inputName;
         [SerializeField] Button submitName;
 
@@ -24,9 +25,16 @@ namespace Balloon
 
         void SubmitName()
         {
-            CheckData();
-            PlayerName = inputName.text.ToString();
-            SuccessCreateName();
+            if (inputName.text == "")
+            {
+                errorText.text = "please input name";
+            }
+            else
+            {
+                CheckData();
+                PlayerName = inputName.text.ToString();
+                SuccessCreateName();
+            }
         }
         void SuccessCreateName()
         {

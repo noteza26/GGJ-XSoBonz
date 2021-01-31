@@ -638,8 +638,9 @@ GameObject:
   - component: {fileID: 277255255}
   - component: {fileID: 277255257}
   - component: {fileID: 277255256}
+  - component: {fileID: 277255258}
   m_Layer: 5
-  m_Name: Temp (1)
+  m_Name: Logo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -654,7 +655,7 @@ RectTransform:
   m_GameObject: {fileID: 277255254}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.16962399, y: 0.16962399, z: 0.16962399}
+  m_LocalScale: {x: 0.21611792, y: 0.21611792, z: 0.21611792}
   m_Children: []
   m_Father: {fileID: 1319021430}
   m_RootOrder: 1
@@ -701,6 +702,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 277255254}
   m_CullTransparentMesh: 0
+--- !u!111 &277255258
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277255254}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 69787830cb6e76046b7ed9e41da50af9, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 69787830cb6e76046b7ed9e41da50af9, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &420339829
 GameObject:
   m_ObjectHideFlags: 0
@@ -2993,6 +3010,7 @@ GameObject:
   - component: {fileID: 1503805664}
   - component: {fileID: 1503805667}
   - component: {fileID: 1503805668}
+  - component: {fileID: 1503805669}
   m_Layer: 5
   m_Name: Ready_button
   m_TagString: Untagged
@@ -3231,6 +3249,22 @@ MonoBehaviour:
   isNewAudio: 0
   audioSource: {fileID: 0}
   soundClick: {fileID: 8300000, guid: 0fc9f034301a2e94cae7a56b8346b364, type: 3}
+--- !u!111 &1503805669
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503805662}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 2e04a1b97a610eb4ea2a971646c9752f, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 2e04a1b97a610eb4ea2a971646c9752f, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1535185602
 GameObject:
   m_ObjectHideFlags: 0
@@ -3877,6 +3911,7 @@ GameObject:
   - component: {fileID: 1941303611}
   - component: {fileID: 1941303614}
   - component: {fileID: 1941303615}
+  - component: {fileID: 1941303616}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4065,6 +4100,19 @@ MonoBehaviour:
       data1: 0
       data2: 0
   defaultFrameSettings: 0
+--- !u!114 &1941303616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941303610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b86a6a092ca8f447a8bd544fb2c0cad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AudioListener: {fileID: 0}
 --- !u!1 &1950309163
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Audio;
 
 public enum Category
@@ -10,6 +11,8 @@ public enum Category
 }
 public class AudioManager : MonoBehaviour
 {
+    [SerializeField] bool isMute;
+    [SerializeField] Button[] MutedButton;
     [SerializeField] GameObject prefSound;
     public static AudioManager instance;
     public AudioSource audioSource;
@@ -26,6 +29,12 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         instance = this;
+        for (int i = 0; i < MutedButton.Length; i++)
+        {
+            MutedButton[i].onClick.AddListener(Muted);
+        }
+        MutedButton[0].gameObject.SetActive(true);
+        MutedButton[1].gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -65,5 +74,24 @@ public class AudioManager : MonoBehaviour
         audioNewSoure.PlayOneShot(JumpingSound);
 
         Destroy(audioNew, JumpingSound.length);
+    }
+    public bool CheckMute()
+    {
+        return isMute;
+    }
+    public void Muted()
+    {
+        if (isMute)
+        {
+            MutedButton[0].gameObject.SetActive(true);
+            MutedButton[1].gameObject.SetActive(false);
+        }
+        else
+        {
+            MutedButton[1].gameObject.SetActive(true);
+            MutedButton[0].gameObject.SetActive(false);
+        }
+
+        isMute = !isMute;
     }
 }

@@ -65,7 +65,7 @@ namespace Balloon.Photon
                 {
                     Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
                     //var randomPosi = Random.Range(0, spawnPosition.Count);
-                    var randomPosi = Random.Range(0, 0);
+                    var randomPosi = Random.Range(0, spawnPosition.Count);
 
                     // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
                     var playerObj = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPosition[randomPosi].position, Quaternion.identity, 0);
