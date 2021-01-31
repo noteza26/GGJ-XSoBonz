@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AudioListenerCheck : MonoBehaviour
 {
+    public bool isMute;
     [SerializeField] AudioListener AudioListener;
 
     private void Awake()
@@ -14,12 +15,18 @@ public class AudioListenerCheck : MonoBehaviour
     private void Update()
     {
         var check = AudioManager.instance.CheckMute();
-        if (check)
+        isMute = AudioManager.instance.CheckMute();
 
+        if (isMute)
+        {
             AudioListener.volume = 0;
-
+        }
         else
+        {
             AudioListener.volume = 1;
+        }
+
+
 
     }
 }
