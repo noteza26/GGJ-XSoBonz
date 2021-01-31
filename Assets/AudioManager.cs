@@ -33,8 +33,6 @@ public class AudioManager : MonoBehaviour
         {
             MutedButton[i].onClick.AddListener(Muted);
         }
-        MutedButton[0].gameObject.SetActive(true);
-        MutedButton[1].gameObject.SetActive(false);
     }
 
     // Update is called once per frame
