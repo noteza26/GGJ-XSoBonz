@@ -159,8 +159,10 @@ namespace Balloon
 
 
                 if (Input.GetButton("Jump"))
+                {
                     moveDirection.y = JumpSpeed;
-
+                    AudioManager.instance.SoundJump(this.transform);
+                }
             }
             moveDirection.y -= Gravity * Time.deltaTime;
             controller.Move(moveDirection * Time.deltaTime);

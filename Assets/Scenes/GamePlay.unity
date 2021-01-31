@@ -177,7 +177,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Rebirthz
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0ef912fe81d7323478c7b5c1d30b05db, type: 2}
   m_sharedMaterial: {fileID: 21465007683182744, guid: 0ef912fe81d7323478c7b5c1d30b05db,
@@ -1803,7 +1803,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 500000
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0ef912fe81d7323478c7b5c1d30b05db, type: 2}
   m_sharedMaterial: {fileID: 21465007683182744, guid: 0ef912fe81d7323478c7b5c1d30b05db,
@@ -2999,13 +2999,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.16509432, g: 1, b: 0.5484248, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: b14fbfbc451085d4dbebe811313899f2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3103,13 +3103,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0.98302364, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: b37a309949876f64d863675d30b21394, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3645,7 +3645,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 500000
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0ef912fe81d7323478c7b5c1d30b05db, type: 2}
   m_sharedMaterial: {fileID: 21465007683182744, guid: 0ef912fe81d7323478c7b5c1d30b05db,
@@ -3890,7 +3890,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1040291263
 Transform:
   m_ObjectHideFlags: 0
@@ -4427,9 +4427,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d49c698bfb1979743bd9a31737871cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefSound: {fileID: 2590238481903519153, guid: a55b32206349a6440bf1047ad233f223,
+    type: 3}
   audioSource: {fileID: 1235069702}
   WhenPlayerJoin: {fileID: 8300000, guid: fd409dc71a8c6b24396f6079041626b0, type: 3}
   WhenPlayerLeft: {fileID: 8300000, guid: 31c70bca4b7b4e24dbe466659335fcc6, type: 3}
+  Shooting: {fileID: 8300000, guid: da937cda50c44b04e80cf322dfedaaff, type: 3}
+  JumpingSound: {fileID: 8300000, guid: 260e4034fcdd30b48acbaa7f025a7c82, type: 3}
   ClickTime: {fileID: 8300000, guid: 336878c3349897941baab0f0a5846fe2, type: 3}
 --- !u!1 &1156643641
 GameObject:
@@ -5507,7 +5511,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 500000
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0ef912fe81d7323478c7b5c1d30b05db, type: 2}
   m_sharedMaterial: {fileID: 21465007683182744, guid: 0ef912fe81d7323478c7b5c1d30b05db,
@@ -5861,13 +5865,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9327779, g: 0, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: e47f51d5a266c3a4ca181bbefdb62a7d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6105,7 +6109,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1469598487
 Transform:
   m_ObjectHideFlags: 0
@@ -6194,7 +6198,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 500000
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0ef912fe81d7323478c7b5c1d30b05db, type: 2}
   m_sharedMaterial: {fileID: 21465007683182744, guid: 0ef912fe81d7323478c7b5c1d30b05db,
@@ -6328,7 +6332,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Rebirthz
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0ef912fe81d7323478c7b5c1d30b05db, type: 2}
   m_sharedMaterial: {fileID: 21465007683182744, guid: 0ef912fe81d7323478c7b5c1d30b05db,
@@ -7648,7 +7652,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Rebirthz
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0ef912fe81d7323478c7b5c1d30b05db, type: 2}
   m_sharedMaterial: {fileID: 21465007683182744, guid: 0ef912fe81d7323478c7b5c1d30b05db,
@@ -8178,13 +8182,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.9136027, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: e0c3af4905e63c141bf6f7c07a7328c7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8657,7 +8661,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Rebirthz
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0ef912fe81d7323478c7b5c1d30b05db, type: 2}
   m_sharedMaterial: {fileID: 21465007683182744, guid: 0ef912fe81d7323478c7b5c1d30b05db,
