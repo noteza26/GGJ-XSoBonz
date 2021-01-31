@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
@@ -18,6 +19,7 @@ namespace Balloon.Photon
         public int PlayerInRoom;
         [SerializeField] List<string> namePlayerList;
         [Header("Camera Object")]
+        public Button CancelButton;
         public GameObject CameraOverview;
         public GameObject WaitingObj;
         [Header("Respawn Zone")]
@@ -46,6 +48,7 @@ namespace Balloon.Photon
         }
         private void Start()
         {
+            CancelButton.onClick.AddListener(CancelWaitingRoom);
             CameraOverview.SetActive(true);
             WaitingObj.SetActive(true);
             RespawnObj.SetActive(false);
@@ -54,9 +57,19 @@ namespace Balloon.Photon
         }
         void Update()
         {
+            if (!PhotonNetwork.InRoom) return;
+
             StartCountdown();
             LoadPlayerInScene();
             FullRoom();
+        }
+        void CancelWaitingRoom()
+        {
+            PhotonNetwork.LeaveRoom();
+        }
+        public override void OnLeftRoom()
+        {
+            SceneManager.LoadScene("Lobby");
         }
         void FullRoom()
         {
@@ -64,7 +77,6 @@ namespace Balloon.Photon
             {
                 //photonView.RPC("StartCountdown", RpcTarget.AllBufferedViaServer);
             }
-
             if (!isGameStart)
                 if (PlayerInRoom == PhotonNetwork.CurrentRoom.MaxPlayers && PhotonNetwork.IsMasterClient)
                 // if (PlayerInRoom == 1 && PhotonNetwork.IsMasterClient)
@@ -157,11 +169,10 @@ namespace Balloon.Photon
 
         public void LoadPlayerInScene()
         {
+            if (!PhotonNetwork.InRoom) return;
 
             if (PlayerInRoom == PhotonNetwork.PlayerList.Length) return;
-
             PlayerInRoom = PhotonNetwork.PlayerList.Length;
-
 
             textCount.text = "Waiting for Player " + PlayerInRoom.ToString() + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
 
@@ -188,6 +199,7 @@ namespace Balloon.Photon
                 Debug.Log(PhotonNetwork.PlayerList[i].NickName);
             }
 
+            AudioManager.instance.SoundWhenPlayerJoin();
 
             Debug.Log("Player in room " + PlayerInRoom);
         }
@@ -201,7 +213,7 @@ namespace Balloon.Photon
             RespawnObj.SetActive(true);
             WaitingObj.SetActive(false);
             CameraOverview.SetActive(true);
-            yield return new WaitForSecondsRealtime(1);
+
             TextRespawn.text = "5";
             yield return new WaitForSecondsRealtime(1);
             TextRespawn.text = "4";
@@ -211,6 +223,8 @@ namespace Balloon.Photon
             TextRespawn.text = "2";
             yield return new WaitForSecondsRealtime(1);
             TextRespawn.text = "1";
+            yield return new WaitForSecondsRealtime(1);
+            TextRespawn.text = "";
 
             PhotonScene.Instance.SpawnPlayer(true);
             CameraOverview.SetActive(false);

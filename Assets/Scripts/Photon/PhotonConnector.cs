@@ -32,24 +32,23 @@ namespace Balloon.Photon
         public int MaxPlayers = 4;
 
         [Header("Button")]
-        [SerializeField] private Button createRoomBut = null;
-        [SerializeField] private Button joinRoomBut = null;
+        [SerializeField] private Button readyButMain = null;
 
         private void Awake()
         {
             DontDestroyOnLoad(this);
 
-            if (PhotonConnector.instance == null)
-                instance = this;
-            else
-                Destroy(this);
+
         }
         // Start is called before the first frame update
         void Start()
         {
+            if (PhotonConnector.instance == null)
+                instance = this;
+            else
+                Destroy(this);
 
             ServerState = ServerState.None;
-            InitButton();
             ConnectToServer();
         }
 
@@ -58,7 +57,7 @@ namespace Balloon.Photon
 
             PhotonNetwork.NickName = playername;
             PlayerName = playername;
-            LobbyState.instance.LoadPlayerName(playername);
+            //LobbyState.instance.LoadPlayerName(playername);
 
             PhotonMainMenu.instance.ChangeRoomState(RoomState.Lobby);
 
@@ -72,11 +71,14 @@ namespace Balloon.Photon
                 Debug.LogWarning("Already Connect to server");
         }
 
-        void InitButton()
+        public void InitButton(Button readyBut)
         {
             // createRoomBut.onClick.AddListener(createRoom);
             //createRoomBut.onClick.AddListener(JoinRoom);
-            joinRoomBut.onClick.AddListener(JoinRoom);
+
+            readyButMain = readyBut;
+
+            readyButMain.onClick.AddListener(JoinRoom);
         }
 
 
@@ -89,7 +91,7 @@ namespace Balloon.Photon
         #region Photon
         private void createRoom()
         {
-            PhotonMainMenu.instance.RoomState = RoomState.onCreateRoom;
+            PhotonLobby.instance.LobbyStateRoom = LobbyStateRoom.onCreateRoom;
             RoomOptions options = new RoomOptions();
             options.MaxPlayers = (byte)MaxPlayers;
             PhotonNetwork.CreateRoom(null, options, TypedLobby.Default);
@@ -98,6 +100,7 @@ namespace Balloon.Photon
 
         public void JoinRoom()
         {
+             PhotonLobby.instance.ChangeRoomState(LobbyStateRoom.JoinedRoom);
 
             // roomState = RoomState.Connected;
             PhotonNetwork.JoinRandomRoom();
@@ -153,13 +156,13 @@ namespace Balloon.Photon
         {
             var random = UnityEngine.Random.Range(3, 7);
 
-            PhotonMainMenu.instance.ChangeRoomState(RoomState.SearchingRoom);
+            PhotonLobby.instance.ChangeRoomState(LobbyStateRoom.SearchingRoom);
 
             yield return new WaitForSecondsRealtime(random);
 
             PhotonNetwork.LoadLevel("GamePlay");
 
-            PhotonMainMenu.instance.ChangeRoomState(RoomState.JoinedRoom);
+            PhotonLobby.instance.ChangeRoomState(LobbyStateRoom.JoinedRoom);
 
             yield return null;
         }

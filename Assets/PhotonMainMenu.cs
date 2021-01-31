@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Photon.Pun;
 using TMPro;
 
@@ -15,10 +16,6 @@ namespace Balloon.Photon
 
         None,
         Lobby,
-
-        onCreateRoom,
-        JoinedRoom,
-        SearchingRoom,
     }
     [Serializable]
     public class SceneSystem
@@ -38,9 +35,6 @@ namespace Balloon.Photon
         [Space(10)]
         [SerializeField] private List<SceneSystem> SceneList = new List<SceneSystem>();
 
-        [SerializeField] TextMeshProUGUI textOnSearch;
-
-        // Start is called before the first frame update
         void Start()
         {
             ChangeRoomState(RoomState.None);
@@ -56,10 +50,7 @@ namespace Balloon.Photon
         {
 
         }
-        public void ChangeText(string data)
-        {
-            textOnSearch.text = data;
-        }
+
         public void ChangeRoomState(RoomState newState)
         {
             RoomState = newState;
@@ -68,19 +59,26 @@ namespace Balloon.Photon
 
         void ChangeUI()
         {
-
-            for (int i = 0; i < SceneList.Count; i++)
-            {
-                SceneList[i].SceneUI.SetActive(false);
-
-                if (RoomState == SceneList[i].state)
-                {
-                    SceneList[i].SceneUI.SetActive(true);
-
-                }
-            }
             if (RoomState == RoomState.Lobby)
-                LobbyState.instance.LoadPlayerName(PhotonConnector.instance.PlayerName);
+            {
+                SceneManager.LoadSceneAsync("Lobby");
+            }
+            else
+                for (int i = 0; i < SceneList.Count; i++)
+                {
+                    SceneList[i].SceneUI.SetActive(false);
+
+                    if (RoomState == SceneList[i].state)
+                    {
+                        SceneList[i].SceneUI.SetActive(true);
+                        /* if (SceneList[i].state == RoomState.Lobby)
+                         {
+                             SceneManager.LoadSceneAsync("Lobby");
+                         }*/
+                    }
+                }
+            /*  if (RoomState == RoomState.Lobby)
+                  LobbyState.instance.LoadPlayerName(PhotonConnector.instance.PlayerName);*/
         }
     }
 }

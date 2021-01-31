@@ -247,10 +247,7 @@ namespace Balloon.Photon
         /// <summary>
         /// Called when the local player left the room. We need to load the launcher scene.
         /// </summary>
-        public override void OnLeftRoom()
-        {
-            SceneManager.LoadScene("PunBasics-Launcher");
-        }
+
 
         #endregion
 
