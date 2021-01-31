@@ -35,6 +35,8 @@ public class PlayerWeapon : MonoBehaviour
     void Update()
     {
         CheckInput();
+        UpdateAmmo();
+
     }
     void CheckInput()
     {
@@ -56,7 +58,7 @@ public class PlayerWeapon : MonoBehaviour
                         bullet.GetComponent<BulletManager>().Owner = pv.name;
 
                         AudioManager.instance.SoundShoot(bullet.transform);
-                        
+
                         AmmoCount--;
 
                         UpdateAmmo();
@@ -85,6 +87,6 @@ public class PlayerWeapon : MonoBehaviour
     }
     void UpdateAmmo()
     {
-        textAmmo.text = AmmoCount.ToString("00");
+        textAmmo.text = AmmoCount.ToString();
     }
 }
