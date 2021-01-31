@@ -27,9 +27,9 @@ public class BulletManager : MonoBehaviourPunCallbacks, IPunObservable
         if (triggerTag == "PlayerController")
         {
             var player = other.GetComponent<PhotonPlayerManager>();
-            player.Hurt(Owner);
-
-
+            if (player)
+                player.Hurt(Owner);
+            GameManager.instance.BoardKilled(Owner, player.PlayerName);
         }
         else if (triggerTag == "AI")
         {
@@ -52,11 +52,12 @@ public class BulletManager : MonoBehaviourPunCallbacks, IPunObservable
             Debug.Log("Killed self");
         }
         if (other.tag == "PlayerController" && other.GetComponent<PhotonPlayerManager>().PlayerName == Owner) return;
-
         Destroy(this.gameObject);
         // Debug.Log(triggerTag);
 
     }
+
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)

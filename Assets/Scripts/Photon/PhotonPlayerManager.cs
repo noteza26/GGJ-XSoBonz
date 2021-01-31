@@ -82,7 +82,6 @@ namespace Balloon.Photon
         public void Hurt(string hurtBy)
         {
             Debug.Log("Hurt " + hurtBy);
-            GameManager.instance.BoardKilled(hurtBy, PlayerName);
 
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
