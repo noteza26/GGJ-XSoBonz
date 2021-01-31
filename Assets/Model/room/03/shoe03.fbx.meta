@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 37e5454a725a7504dadfb86d5a090faf
+guid: e637565fb4230e746a960b6dae5b82c8
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: shoes_01
-    second: {fileID: 2100000, guid: 861c784a822dc7241a75a0ecd1573476, type: 2}
+    second: {fileID: 2100000, guid: f14dc4c6cb7444948ab1c14a43708bde, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
