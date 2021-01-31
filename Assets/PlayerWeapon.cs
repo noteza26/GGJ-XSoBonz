@@ -55,6 +55,8 @@ public class PlayerWeapon : MonoBehaviour
                         //  bullet.GetComponent<BulletManager>().photonPlayerManager = photonPlayerManager;
                         bullet.GetComponent<BulletManager>().Owner = pv.name;
 
+                        AudioManager.instance.SoundShoot(bullet.transform);
+                        
                         AmmoCount--;
 
                         UpdateAmmo();

@@ -72,15 +72,10 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
     }
     public void BoardKilled(string hurtby, string hurtto)
     {
-        photonView.RPC("BoardKilledRPC", RpcTarget.AllBufferedViaServer, hurtby, hurtto);
-    }
-    [PunRPC]
-    void BoardKilledRPC(string hurtby, string hurtto)
-    {
         Debug.Log("Player " + hurtto + " has killed By " + hurtby);
+
         if (hurtby == hurtto)
         {
-
             for (int i = 0; i < AllPlayerData.Count; i++)
             {
                 if (hurtby == AllPlayerData[i].PlayerName)
@@ -88,9 +83,9 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
                     var playerScore = AllPlayerData[i].PlayerScore;
                     if (playerScore > 0)
                     {
-                        //  photonView.RPC("DeleteScore", RpcTarget.AllBufferedViaServer, i);
+                        // photonView.RPC("DeleteScore", RpcTarget.All, i);
 
-                        playerScore -= ScoreDelete;
+                        AllPlayerData[i].PlayerScore -= ScoreDelete;
                         Debug.Log("Delete " + ScoreDelete + " Total" + playerScore + " Name " + AllPlayerData[i].PlayerName);
                     }
 
@@ -104,14 +99,28 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
             {
                 if (hurtby == AllPlayerData[i].PlayerName)
                 {
-                    //photonView.RPC("AddScore", RpcTarget.AllBufferedViaServer, i);
+                    //photonView.RPC("AddScore", RpcTarget.All, i);
                     AllPlayerData[i].PlayerScore += ScoreAdd;
                     Debug.Log("Add " + ScoreAdd + " Total" + AllPlayerData[i].PlayerScore + " Name " + AllPlayerData[i].PlayerName);
 
                 }
             }
         }
+        //photonView.RPC("BoardKilledRPC", RpcTarget.OthersBuffered, hurtby, hurtto);
     }
+    [PunRPC]
+    void AddScore(int i)
+    {
+        AllPlayerData[i].PlayerScore += ScoreAdd;
+        Debug.Log("Add " + ScoreAdd + " Total " + AllPlayerData[i].PlayerScore + " Name " + AllPlayerData[i].PlayerName);
+    }
+    [PunRPC]
+    void DeleteScore(int i)
+    {
+        AllPlayerData[i].PlayerScore -= ScoreDelete;
+        Debug.Log("Delete " + ScoreDelete + " Total " + AllPlayerData[i].PlayerScore + " Name " + AllPlayerData[i].PlayerName);
+    }
+
     public void UpdatePlayerRespawn(string name, GameObject playerObj)
     {
         foreach (var item in AllPlayerData)

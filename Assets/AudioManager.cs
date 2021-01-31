@@ -10,11 +10,17 @@ public enum Category
 }
 public class AudioManager : MonoBehaviour
 {
+    [SerializeField] GameObject prefSound;
     public static AudioManager instance;
     public AudioSource audioSource;
 
     public AudioClip WhenPlayerJoin;
     public AudioClip WhenPlayerLeft;
+
+    [Header("Shoot")]
+    public AudioClip Shooting;
+    public AudioClip JumpingSound;
+
     public AudioClip ClickTime;
     // Start is called before the first frame update
     void Start()
@@ -39,6 +45,25 @@ public class AudioManager : MonoBehaviour
     public void SoundClickTime()
     {
         audioSource.PlayOneShot(ClickTime);
+    }
+    public void SoundShoot(Transform trans)
+    {
 
+        var audioNew = Instantiate(prefSound, trans.position, Quaternion.identity);
+        var audioNewSoure = audioNew.GetComponent<AudioSource>();
+        audioNewSoure.volume = 0.5f;
+        audioNewSoure.PlayOneShot(Shooting);
+
+        Destroy(audioNew, Shooting.length);
+    }
+    public void SoundJump(Transform trans)
+    {
+
+        var audioNew = Instantiate(prefSound, trans.position, Quaternion.identity);
+        var audioNewSoure = audioNew.GetComponent<AudioSource>();
+        audioNewSoure.volume = 0.5f;
+        audioNewSoure.PlayOneShot(JumpingSound);
+
+        Destroy(audioNew, JumpingSound.length);
     }
 }

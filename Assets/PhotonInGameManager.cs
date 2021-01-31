@@ -53,10 +53,13 @@ namespace Balloon.Photon
         {
             CancelButton2.onClick.AddListener(CancelWaitingRoom);
             CancelButton.onClick.AddListener(CancelWaitingRoom);
+
             CameraOverview.SetActive(true);
             WaitingObj.SetActive(true);
             RespawnObj.SetActive(false);
             CountdownObj.SetActive(false);
+            GameOverObj.SetActive(false);
+
             textName.text = PhotonNetwork.LocalPlayer.NickName;
         }
         void Update()
@@ -93,8 +96,8 @@ namespace Balloon.Photon
                 //photonView.RPC("StartCountdown", RpcTarget.AllBufferedViaServer);
             }
             if (!isGameStart)
-                if (PlayerInRoom == PhotonNetwork.CurrentRoom.MaxPlayers && PhotonNetwork.IsMasterClient)
-                //if (PlayerInRoom == 1 && PhotonNetwork.IsMasterClient)
+                //if (PlayerInRoom == PhotonNetwork.CurrentRoom.MaxPlayers && PhotonNetwork.IsMasterClient)
+                if (PlayerInRoom == 1 && PhotonNetwork.IsMasterClient)
                 {
                     isCountdown = true;
                 }
@@ -135,38 +138,7 @@ namespace Balloon.Photon
             isCountdown = false;
             isGameStart = true;
         }
-        /*   void LoadPlayerTeam()
-           {
-               var manager = GameManager.instance;
 
-               var findPlayer = GameObject.FindGameObjectsWithTag("PlayerController");
-
-               if (findPlayer.Length == manager.PlayerInRoom) return;
-
-               manager.ClearListTeam();
-
-               for (int i = 0; i < findPlayer.Length; i++)
-               {
-                   var getPlayerData = findPlayer[i].GetComponent<PhotonPlayerManager>();
-                   if (manager)
-                   {
-                       if (manager.TeamAData.PlayerTeamData.Count <= manager.TeamBData.PlayerTeamData.Count)
-                       {
-                           manager.AddDataToTeam("A", getPlayerData.PlayerName, getPlayerData.PlayerID, getPlayerData.gameObject);
-                           getPlayerData.Team = PhotonPlayerManager.TeamList.A;
-                           getPlayerData.LoadTeam();
-                       }
-                       else
-                       {
-                           manager.AddDataToTeam("B", getPlayerData.PlayerName, getPlayerData.PlayerID, getPlayerData.gameObject);
-                           getPlayerData.Team = PhotonPlayerManager.TeamList.B;
-                           getPlayerData.LoadTeam();
-                       }
-                       Debug.Log(getPlayerData.PlayerName);
-                   }
-               }
-
-           }*/
 
         public void LoadPlayerInScene()
         {
@@ -205,7 +177,7 @@ namespace Balloon.Photon
         }
         public void Respawn()
         {
-            if (GameManager.instance.TimerInGame <= 7)
+            if (GameManager.instance.TimerInGame <= 3)
             {
                 CameraOverview.SetActive(true);
                 WaitingObj.SetActive(false);
