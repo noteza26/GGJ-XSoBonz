@@ -96,8 +96,8 @@ namespace Balloon.Photon
                 //photonView.RPC("StartCountdown", RpcTarget.AllBufferedViaServer);
             }
             if (!isGameStart)
-                //if (PlayerInRoom == PhotonNetwork.CurrentRoom.MaxPlayers && PhotonNetwork.IsMasterClient)
-                if (PlayerInRoom == 1 && PhotonNetwork.IsMasterClient)
+                if (PlayerInRoom == PhotonNetwork.CurrentRoom.MaxPlayers && PhotonNetwork.IsMasterClient)
+                //if (PlayerInRoom == 1 && PhotonNetwork.IsMasterClient)
                 {
                     isCountdown = true;
                 }
