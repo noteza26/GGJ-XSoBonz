@@ -22,7 +22,7 @@ public class HightScoreManager : MonoBehaviour
         {
             if (data[i] == null)
             {
-                highScoreDatas[i].SetData("", 0);
+                highScoreDatas[i].SetData("null", 0);
             }
             else
                 highScoreDatas[i].SetData(data[i].PlayerName, data[i].PlayerScore);

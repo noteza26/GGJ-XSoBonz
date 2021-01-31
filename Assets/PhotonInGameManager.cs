@@ -93,8 +93,8 @@ namespace Balloon.Photon
                 //photonView.RPC("StartCountdown", RpcTarget.AllBufferedViaServer);
             }
             if (!isGameStart)
-                //if (PlayerInRoom == PhotonNetwork.CurrentRoom.MaxPlayers && PhotonNetwork.IsMasterClient)
-                if (PlayerInRoom == 1 && PhotonNetwork.IsMasterClient)
+                if (PlayerInRoom == PhotonNetwork.CurrentRoom.MaxPlayers && PhotonNetwork.IsMasterClient)
+                //if (PlayerInRoom == 1 && PhotonNetwork.IsMasterClient)
                 {
                     isCountdown = true;
                 }
@@ -205,8 +205,16 @@ namespace Balloon.Photon
         }
         public void Respawn()
         {
-
-            StartCoroutine("Spawning");
+            if (GameManager.instance.TimerInGame <= 7)
+            {
+                CameraOverview.SetActive(true);
+                WaitingObj.SetActive(false);
+                RespawnObj.SetActive(false);
+                CountdownObj.SetActive(false);
+                GameOverObj.SetActive(true);
+            }
+            else
+                StartCoroutine("Spawning");
         }
         IEnumerator Spawning()
         {
@@ -238,12 +246,22 @@ namespace Balloon.Photon
             yield return new WaitForSecondsRealtime(1);
             TextRespawn.text = "";
 
-            PhotonScene.Instance.SpawnPlayer(true);
-            CameraOverview.SetActive(false);
-            WaitingObj.SetActive(false);
-            RespawnObj.SetActive(false);
-            CountdownObj.SetActive(false);
-
+            if (!isGameStart)
+            {
+                CameraOverview.SetActive(true);
+                WaitingObj.SetActive(false);
+                RespawnObj.SetActive(false);
+                CountdownObj.SetActive(false);
+                GameOverObj.SetActive(true);
+            }
+            else
+            {
+                PhotonScene.Instance.SpawnPlayer(true);
+                CameraOverview.SetActive(false);
+                WaitingObj.SetActive(false);
+                RespawnObj.SetActive(false);
+                CountdownObj.SetActive(false);
+            }
         }
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {

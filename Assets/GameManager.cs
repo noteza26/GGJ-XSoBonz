@@ -51,9 +51,8 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
                 TimerInGame -= Time.deltaTime;
                 if (TimerInGame <= 0)
                 {
-                    TimerInGame = 0;
-                    PhotonInGameManager.instance.GameOver();
-                    isStart = false;
+                    photonView.RPC("Gameover", RpcTarget.AllBufferedViaServer);
+
                     /*
 
                         Create Scoreboard Scene to show score
@@ -64,14 +63,24 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
     }
-
+    [PunRPC]
+    void Gameover()
+    {
+        TimerInGame = 0;
+        PhotonInGameManager.instance.GameOver();
+        isStart = false;
+    }
     public void BoardKilled(string hurtby, string hurtto)
     {
-
+        photonView.RPC("BoardKilledRPC", RpcTarget.AllBufferedViaServer, hurtby, hurtto);
+    }
+    [PunRPC]
+    void BoardKilledRPC(string hurtby, string hurtto)
+    {
         Debug.Log("Player " + hurtto + " has killed By " + hurtby);
         if (hurtby == hurtto)
         {
-            Debug.Log("SameName");
+
             for (int i = 0; i < AllPlayerData.Count; i++)
             {
                 if (hurtby == AllPlayerData[i].PlayerName)
@@ -79,43 +88,29 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
                     var playerScore = AllPlayerData[i].PlayerScore;
                     if (playerScore > 0)
                     {
+                        //  photonView.RPC("DeleteScore", RpcTarget.AllBufferedViaServer, i);
+
                         playerScore -= ScoreDelete;
                         Debug.Log("Delete " + ScoreDelete + " Total" + playerScore + " Name " + AllPlayerData[i].PlayerName);
                     }
-                    //photonView.RPC("DeleteScore", RpcTarget.AllBufferedViaServer, AllPlayerData[i]);
 
                 }
             }
         }
         else
         {
-            Debug.Log("Not Same");
+
             for (int i = 0; i < AllPlayerData.Count; i++)
             {
                 if (hurtby == AllPlayerData[i].PlayerName)
                 {
-                    //photonView.RPC("AddScore", RpcTarget.All, i);
+                    //photonView.RPC("AddScore", RpcTarget.AllBufferedViaServer, i);
                     AllPlayerData[i].PlayerScore += ScoreAdd;
                     Debug.Log("Add " + ScoreAdd + " Total" + AllPlayerData[i].PlayerScore + " Name " + AllPlayerData[i].PlayerName);
 
                 }
             }
         }
-    }
-    [PunRPC]
-    void AddScore(int i)
-    {
-        var playerScore = AllPlayerData[i].PlayerScore;
-        playerScore += ScoreAdd;
-        Debug.Log("Add " + ScoreAdd + " Total" + playerScore + " Name " + AllPlayerData[i].PlayerName);
-
-    }
-    [PunRPC]
-    void DeleteScore(int i)
-    {
-        var playerScore = AllPlayerData[i].PlayerScore;
-        playerScore -= ScoreAdd;
-        Debug.Log("Delete " + ScoreDelete + " Total" + playerScore + " Name " + AllPlayerData[i].PlayerName);
     }
     public void UpdatePlayerRespawn(string name, GameObject playerObj)
     {
