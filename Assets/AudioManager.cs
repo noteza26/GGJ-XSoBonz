@@ -14,6 +14,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource audioSource;
 
     public AudioClip WhenPlayerJoin;
+    public AudioClip WhenPlayerLeft;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,5 +30,9 @@ public class AudioManager : MonoBehaviour
     public void SoundWhenPlayerJoin()
     {
         audioSource.PlayOneShot(WhenPlayerJoin);
+    }
+    public void SoundWhenPlayerLeft()
+    {
+        audioSource.PlayOneShot(WhenPlayerLeft);
     }
 }

@@ -199,7 +199,6 @@ namespace Balloon.Photon
                 Debug.Log(PhotonNetwork.PlayerList[i].NickName);
             }
 
-            AudioManager.instance.SoundWhenPlayerJoin();
 
             Debug.Log("Player in room " + PlayerInRoom);
         }
@@ -234,9 +233,9 @@ namespace Balloon.Photon
         }
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
-            if (!PhotonNetwork.IsMasterClient) return;
 
             base.OnPlayerEnteredRoom(newPlayer);
+            AudioManager.instance.SoundWhenPlayerJoin();
 
 
         }
@@ -244,9 +243,9 @@ namespace Balloon.Photon
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
-            if (!PhotonNetwork.IsMasterClient) return;
 
             base.OnPlayerLeftRoom(otherPlayer);
+            AudioManager.instance.SoundWhenPlayerLeft();
 
 
         }

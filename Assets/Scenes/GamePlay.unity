@@ -3301,7 +3301,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 1235069702}
-  WhenPlayerJoin: {fileID: 8300000, guid: 31c70bca4b7b4e24dbe466659335fcc6, type: 3}
+  WhenPlayerJoin: {fileID: 8300000, guid: fd409dc71a8c6b24396f6079041626b0, type: 3}
+  WhenPlayerLeft: {fileID: 8300000, guid: 31c70bca4b7b4e24dbe466659335fcc6, type: 3}
 --- !u!1 &1156643641
 GameObject:
   m_ObjectHideFlags: 0
