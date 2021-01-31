@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Editor.meta
 guid: 472630952e3ea1f419786234a2e1cb52
+=======
+guid: 0396bd88bfc90b24f8713f695263a0d3
+>>>>>>> ca9ccf51e27837ed0aaa155b600c3cc6e7e038fd:Assets/Thirdparty/FImpossible Creations/Plugins/Tail Animator/Packages - Demos - Converter.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
